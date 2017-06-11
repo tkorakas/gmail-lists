@@ -9118,7 +9118,7 @@ exports.default = appID;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -9136,72 +9136,72 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Lists = function (_Component) {
-    _inherits(Lists, _Component);
+  _inherits(Lists, _Component);
 
-    function Lists(props) {
-        _classCallCheck(this, Lists);
+  function Lists(props) {
+    _classCallCheck(this, Lists);
 
-        var _this = _possibleConstructorReturn(this, (Lists.__proto__ || Object.getPrototypeOf(Lists)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Lists.__proto__ || Object.getPrototypeOf(Lists)).call(this, props));
 
-        _this.state = {
-            items: []
-        };
-        _this.fillRecipients = _this.fillRecipients.bind(_this);
-        return _this;
+    _this.state = {
+      items: []
+    };
+    _this.fillRecipients = _this.fillRecipients.bind(_this);
+    return _this;
+  }
+
+  _createClass(Lists, [{
+    key: 'renderLists',
+    value: function renderLists() {
+      var lists = localStorage.getItem('gmail_lists');
+      console.log(lists);
     }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
 
-    _createClass(Lists, [{
-        key: 'renderLists',
-        value: function renderLists() {
-            var lists = localStorage.getItem('gmail_lists');
-            console.log(lists);
-        }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this2 = this;
+      chrome.storage.sync.get('gmail_lists', function (data) {
+        _this2.setState({
+          items: data['gmail_lists'] != undefined ? data['gmail_lists'] : []
+        });
+      });
+    }
+  }, {
+    key: 'fillRecipients',
+    value: function fillRecipients(e) {
+      var _this3 = this;
 
-            chrome.storage.sync.get('gmail_lists', function (data) {
-                _this2.setState({
-                    items: data['gmail_lists'] != undefined ? data['gmail_lists'] : []
-                });
-            });
-        }
-    }, {
-        key: 'fillRecipients',
-        value: function fillRecipients(e) {
-            var _this3 = this;
+      e.preventDefault();
+      var name = e.target.name;
+      chrome.storage.sync.get('gmail_lists_' + name, function (data) {
+        _this3.props.event.composeView.setToRecipients(data['gmail_lists_' + name]);
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this4 = this;
 
-            e.preventDefault();
-            var name = e.target.name;
-            chrome.storage.sync.get('gmail_lists_' + name, function (data) {
-                _this3.props.event.composeView.setToRecipients(data['gmail_lists_' + name]);
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this4 = this;
+      return _react2.default.createElement(
+        'ul',
+        null,
+        this.state.items.map(function (item) {
+          return _react2.default.createElement(
+            'li',
+            null,
+            _react2.default.createElement(
+              'a',
+              { name: item, onClick: _this4.fillRecipients, href: '' },
+              item
+            )
+          );
+        })
+      );
+    }
+  }]);
 
-            return _react2.default.createElement(
-                'ul',
-                null,
-                this.state.items.map(function (item) {
-                    return _react2.default.createElement(
-                        'li',
-                        null,
-                        _react2.default.createElement(
-                            'a',
-                            { name: item, onClick: _this4.fillRecipients, href: '' },
-                            item
-                        )
-                    );
-                })
-            );
-        }
-    }]);
-
-    return Lists;
+  return Lists;
 }(_react.Component);
 
 exports.default = Lists;
@@ -9242,19 +9242,19 @@ var _AppId2 = _interopRequireDefault(_AppId);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 InboxSDK.load('1', _AppId2.default).then(function (sdk) {
-    // The SDK has been loaded.
-    sdk.Compose.registerComposeViewHandler(function (composeView) {
-        // A compose view has come into existence.
-        composeView.addButton({
-            title: "Add recipients",
-            iconUrl: chrome.runtime.getURL('assets/add_friends.png'),
-            hasDropdown: true,
-            onClick: function onClick(event) {
-                event.dropdown.el.innerHTML = "<div id='gmail_lists_content'> </div>";
-                _reactDom2.default.render(_react2.default.createElement(_index2.default, { event: event }), document.getElementById('gmail_lists_content'));
-            }
-        });
+  // The SDK has been loaded.
+  sdk.Compose.registerComposeViewHandler(function (composeView) {
+    // A compose view has come into existence.
+    composeView.addButton({
+      title: "Add recipients",
+      iconUrl: chrome.runtime.getURL('assets/add_friends.png'),
+      hasDropdown: true,
+      onClick: function onClick(event) {
+        event.dropdown.el.innerHTML = "<div id='gmail_lists_content'> </div>";
+        _reactDom2.default.render(_react2.default.createElement(_index2.default, { event: event }), document.getElementById('gmail_lists_content'));
+      }
     });
+  });
 });
 
 /***/ }),

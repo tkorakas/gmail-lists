@@ -9105,7 +9105,7 @@ module.exports = canDefineProperty;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -9125,177 +9125,177 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Popup = function (_Component) {
-    _inherits(Popup, _Component);
+  _inherits(Popup, _Component);
 
-    function Popup(props) {
-        _classCallCheck(this, Popup);
+  function Popup(props) {
+    _classCallCheck(this, Popup);
 
-        var _this = _possibleConstructorReturn(this, (Popup.__proto__ || Object.getPrototypeOf(Popup)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Popup.__proto__ || Object.getPrototypeOf(Popup)).call(this, props));
 
-        _this.state = {
-            items: [],
-            storage: 'gmail_lists',
-            placeholder: 'Add new group'
-        };
+    _this.state = {
+      items: [],
+      storage: 'gmail_lists',
+      placeholder: 'Add new group'
+    };
 
-        _this.addItem = _this.addItem.bind(_this);
-        _this.deleteItem = _this.deleteItem.bind(_this);
-        _this.saveToChromeStorage = _this.saveToChromeStorage.bind(_this);
-        _this.changeRecipients = _this.changeRecipients.bind(_this);
-        _this.goBack = _this.goBack.bind(_this);
-        _this.loadLists = _this.loadLists.bind(_this);
-        return _this;
+    _this.addItem = _this.addItem.bind(_this);
+    _this.deleteItem = _this.deleteItem.bind(_this);
+    _this.saveToChromeStorage = _this.saveToChromeStorage.bind(_this);
+    _this.changeRecipients = _this.changeRecipients.bind(_this);
+    _this.goBack = _this.goBack.bind(_this);
+    _this.loadLists = _this.loadLists.bind(_this);
+    return _this;
+  }
+
+  _createClass(Popup, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.loadLists();
+    }
+  }, {
+    key: 'loadLists',
+    value: function loadLists() {
+      var _this2 = this;
+
+      chrome.storage.sync.get(this.state.storage, function (data) {
+        _this2.setState({
+          items: data[_this2.state.storage] != undefined ? data[_this2.state.storage] : []
+        });
+      });
     }
 
-    _createClass(Popup, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this.loadLists();
-        }
-    }, {
-        key: 'loadLists',
-        value: function loadLists() {
-            var _this2 = this;
+    /**
+     * Add new list.
+     */
 
-            chrome.storage.sync.get(this.state.storage, function (data) {
-                _this2.setState({
-                    items: data[_this2.state.storage] != undefined ? data[_this2.state.storage] : []
-                });
-            });
+  }, {
+    key: 'addItem',
+    value: function addItem(e) {
+      if (e.key == 'Enter') {
+        // Check if list name already exists.
+        if (!this.state.items.includes(this.text.value)) {
+          // Add new item to array and save to chrome storage and update state.
+          var items = [].concat(_toConsumableArray(this.state.items), [this.text.value]);
+          this.saveToChromeStorage(items);
         }
 
-        /**
-         * Add new list.
-         */
+        this.text.value = '';
+      }
+    }
 
-    }, {
-        key: 'addItem',
-        value: function addItem(e) {
-            if (e.key == 'Enter') {
-                // Check if list name already exists.
-                if (!this.state.items.includes(this.text.value)) {
-                    // Add new item to array and save to chrome storage and update state.
-                    var items = [].concat(_toConsumableArray(this.state.items), [this.text.value]);
-                    this.saveToChromeStorage(items);
-                }
+    /**
+     * Delete an item from the list.
+     */
 
-                this.text.value = '';
-            }
-        }
+  }, {
+    key: 'deleteItem',
+    value: function deleteItem(e) {
+      e.preventDefault();
+      // Remove item from array and save to chrome storage and update state.
+      var items = this.state.items.filter(function (item) {
+        return item != e.target.name;
+      });
+      this.saveToChromeStorage(items);
+    }
 
-        /**
-         * Delete an item from the list.
-         */
+    /**
+     * Change to recipients view.
+     */
 
-    }, {
-        key: 'deleteItem',
-        value: function deleteItem(e) {
-            e.preventDefault();
-            // Remove item from array and save to chrome storage and update state.
-            var items = this.state.items.filter(function (item) {
-                return item != e.target.name;
-            });
-            this.saveToChromeStorage(items);
-        }
+  }, {
+    key: 'changeRecipients',
+    value: function changeRecipients(e) {
+      var _this3 = this;
 
-        /**
-         * Change to recipients view.
-         */
+      e.preventDefault();
+      var name = e.target.name;
+      chrome.storage.sync.get('gmail_lists_' + name, function (data) {
+        _this3.setState({
+          items: data['gmail_lists_' + name] != undefined ? data['gmail_lists_' + name] : [],
+          storage: 'gmail_lists_' + name,
+          placeholder: 'Add recipients'
+        });
+      });
+    }
+  }, {
+    key: 'goBack',
+    value: function goBack(e) {
+      var _this4 = this;
 
-    }, {
-        key: 'changeRecipients',
-        value: function changeRecipients(e) {
-            var _this3 = this;
+      e.preventDefault();
+      this.setState({
+        placeholder: 'Add new group',
+        storage: 'gmail_lists'
+      }, function () {
+        return _this4.loadLists();
+      });
+    }
 
-            e.preventDefault();
-            var name = e.target.name;
-            chrome.storage.sync.get('gmail_lists_' + name, function (data) {
-                _this3.setState({
-                    items: data['gmail_lists_' + name] != undefined ? data['gmail_lists_' + name] : [],
-                    storage: 'gmail_lists_' + name,
-                    placeholder: 'Add recipients'
-                });
-            });
-        }
-    }, {
-        key: 'goBack',
-        value: function goBack(e) {
-            var _this4 = this;
+    /**
+     * Set items to chrome storage and update local state.
+     *
+     * @param items
+     *  Array with string items.
+     */
 
-            e.preventDefault();
-            this.setState({
-                placeholder: 'Add new group',
-                storage: 'gmail_lists'
-            }, function () {
-                return _this4.loadLists();
-            });
-        }
+  }, {
+    key: 'saveToChromeStorage',
+    value: function saveToChromeStorage(items) {
+      var _this5 = this;
 
-        /**
-         * Set items to chrome storage and update local state.
-         *
-         * @param items
-         *  Array with string items.
-         */
+      var objectToSave = {};
+      objectToSave[this.state.storage] = items;
+      chrome.storage.sync.set(objectToSave, function () {
+        _this5.setState({
+          items: items
+        });
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this6 = this;
 
-    }, {
-        key: 'saveToChromeStorage',
-        value: function saveToChromeStorage(items) {
-            var _this5 = this;
-
-            var objectToSave = {};
-            objectToSave[this.state.storage] = items;
-            chrome.storage.sync.set(objectToSave, function () {
-                _this5.setState({
-                    items: items
-                });
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this6 = this;
-
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'div',
+          null,
+          this.state.placeholder == 'Add recipients' ? _react2.default.createElement(
+            'a',
+            { onClick: this.goBack, href: '#' },
+            '<'
+          ) : null,
+          _react2.default.createElement('input', { placeholder: this.state.placeholder, onKeyPress: this.addItem, type: 'text', ref: function ref(c) {
+              return _this6.text = c;
+            } })
+        ),
+        _react2.default.createElement(
+          'ul',
+          null,
+          this.state.items.map(function (item) {
             return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'div',
-                    null,
-                    this.state.placeholder == 'Add recipients' ? _react2.default.createElement(
-                        'a',
-                        { onClick: this.goBack, href: '#' },
-                        '<'
-                    ) : null,
-                    _react2.default.createElement('input', { placeholder: this.state.placeholder, onKeyPress: this.addItem, type: 'text', ref: function ref(c) {
-                            return _this6.text = c;
-                        } })
-                ),
-                _react2.default.createElement(
-                    'ul',
-                    null,
-                    this.state.items.map(function (item) {
-                        return _react2.default.createElement(
-                            'li',
-                            null,
-                            _react2.default.createElement(
-                                'a',
-                                { name: item, onClick: _this6.changeRecipients, href: '' },
-                                item
-                            ),
-                            _react2.default.createElement(
-                                'a',
-                                { name: item, onClick: _this6.deleteItem, style: { float: 'right' }, href: '' },
-                                '\u2715'
-                            )
-                        );
-                    })
-                )
+              'li',
+              null,
+              _react2.default.createElement(
+                'a',
+                { name: item, onClick: _this6.changeRecipients, href: '' },
+                item
+              ),
+              _react2.default.createElement(
+                'a',
+                { name: item, onClick: _this6.deleteItem, style: { float: 'right' }, href: '' },
+                '\u2715'
+              )
             );
-        }
-    }]);
+          })
+        )
+      );
+    }
+  }]);
 
-    return Popup;
+  return Popup;
 }(_react.Component);
 
 exports.default = Popup;
