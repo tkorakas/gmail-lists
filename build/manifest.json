@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+  "name": "Gmail lists",
+  "description": "Create mail lists to reuse fast on your emails.",
+  "version": "0.0.1",
+  "browser_action": {
+    "default_title": "Gmail lists",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mail.google.com/*",
+        "https://inbox.google.com/*"
+      ],
+      "css": [],
+      "js": [
+        "inboxsdk.js",
+        "content.js"
+      ]
+    }
+  ],
+  "permissions": [
+    "storage"
+  ],
+  "web_accessible_resources": [
+    "assets/*"
+  ]
+}
