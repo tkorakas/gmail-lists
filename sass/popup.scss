@@ -1,4 +1,39 @@
+@import "variables";
+
+body {
+  font-size: 15px;
+  min-width: 400px;
+  font-weight: 400;
+}
+
+.input-container {
+  display: block;
+  overflow: hidden;
+}
+
+input[type="text"] {
+  width: 100%;
+  height: 20px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
 ul {
   list-style: none;
   padding: 0;
+  li {
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 30px;
+    &:nth-child(even) {
+      background-color: $gmail-grey;
+    }
+  }
+}
+
+.back-button {
+  float: left;
 }

@@ -1,2 +1,14 @@
+#gmail_lists_content ul {
+  list-style: none;
+  padding: 0; }
+  #gmail_lists_content ul a {
+    text-decoration: none;
+    color: #444; }
+  #gmail_lists_content ul li {
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 25px; }
+    #gmail_lists_content ul li:nth-child(even) {
+      background-color: #f5f5f5; }
 
-/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJjb250ZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbXX0= */
+/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNvbnRlbnQuc2NzcyIsIl92YXJpYWJsZXMuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFFQTtFQUdJLGlCQUFnQjtFQUNoQixXQUFVLEVBY1g7RUFsQkg7SUFPTSxzQkFBcUI7SUFDckIsWUFBVyxFQUNaO0VBVEw7SUFXTSxnQkFBZTtJQUNmLGVBQWM7SUFDZCxrQkFBaUIsRUFJbEI7SUFqQkw7TUFlUSwwQkNqQlksRURrQmIiLCJmaWxlIjoiY29udGVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJAaW1wb3J0IFwidmFyaWFibGVzXCI7XG5cbiNnbWFpbF9saXN0c19jb250ZW50IHtcblxuICB1bCB7XG4gICAgbGlzdC1zdHlsZTogbm9uZTtcbiAgICBwYWRkaW5nOiAwO1xuXG4gICAgYSB7XG4gICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7XG4gICAgICBjb2xvcjogIzQ0NDtcbiAgICB9XG4gICAgbGkge1xuICAgICAgY3Vyc29yOiBwb2ludGVyO1xuICAgICAgcGFkZGluZzogMCA1cHg7XG4gICAgICBsaW5lLWhlaWdodDogMjVweDtcbiAgICAgICY6bnRoLWNoaWxkKGV2ZW4pIHtcbiAgICAgICAgYmFja2dyb3VuZC1jb2xvcjogJGdtYWlsLWdyZXk7XG4gICAgICB9XG4gICAgfVxuICB9XG59XG4iLCIkZ21haWwtZ3JleTogI2Y1ZjVmNTtcbiJdfQ== */

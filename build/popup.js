@@ -9191,6 +9191,7 @@ var Popup = function (_Component) {
     key: 'deleteItem',
     value: function deleteItem(e) {
       e.preventDefault();
+      e.stopPropagation();
       // Remove item from array and save to chrome storage and update state.
       var items = this.state.items.filter(function (item) {
         return item != e.target.name;
@@ -9259,14 +9260,14 @@ var Popup = function (_Component) {
       return _react2.default.createElement(
         'div',
         null,
+        this.state.placeholder == 'Add recipients' ? _react2.default.createElement(
+          'a',
+          { onClick: this.goBack, href: '#', className: 'back-button' },
+          '<'
+        ) : null,
         _react2.default.createElement(
-          'div',
-          null,
-          this.state.placeholder == 'Add recipients' ? _react2.default.createElement(
-            'a',
-            { onClick: this.goBack, href: '#' },
-            '<'
-          ) : null,
+          'span',
+          { className: 'input-container' },
           _react2.default.createElement('input', { placeholder: this.state.placeholder, onKeyPress: this.addItem, type: 'text', ref: function ref(c) {
               return _this6.text = c;
             } })
@@ -9277,10 +9278,10 @@ var Popup = function (_Component) {
           this.state.items.map(function (item) {
             return _react2.default.createElement(
               'li',
-              null,
+              { name: item, onClick: _this6.changeRecipients },
               _react2.default.createElement(
-                'a',
-                { name: item, onClick: _this6.changeRecipients, href: '' },
+                'span',
+                null,
                 item
               ),
               _react2.default.createElement(

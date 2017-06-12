@@ -1,0 +1,22 @@
+@import "variables";
+
+#gmail_lists_content {
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    a {
+      text-decoration: none;
+      color: #444;
+    }
+    li {
+      cursor: pointer;
+      padding: 0 5px;
+      line-height: 25px;
+      &:nth-child(even) {
+        background-color: $gmail-grey;
+      }
+    }
+  }
+}

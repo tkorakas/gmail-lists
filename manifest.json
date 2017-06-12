@@ -13,7 +13,9 @@
         "https://mail.google.com/*",
         "https://inbox.google.com/*"
       ],
-      "css": [],
+      "css": [
+        "css/content.css"
+      ],
       "js": [
         "inboxsdk.js",
         "content.js"
@@ -24,6 +26,7 @@
     "storage"
   ],
   "web_accessible_resources": [
-    "assets/*"
+    "assets/*",
+    "css/content.css"
   ]
 }

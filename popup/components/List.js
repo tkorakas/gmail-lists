@@ -50,6 +50,7 @@ export default class Popup extends Component {
    */
   deleteItem(e) {
     e.preventDefault();
+    e.stopPropagation();
     // Remove item from array and save to chrome storage and update state.
     const items = this.state.items.filter((item) => item != e.target.name);
     this.saveToChromeStorage(items);
@@ -97,15 +98,15 @@ export default class Popup extends Component {
   render() {
     return (
       <div>
-        <div>
-          {this.state.placeholder == 'Add recipients' ? <a onClick={this.goBack} href="#">&lt;</a> : null}
+        {this.state.placeholder == 'Add recipients' ? <a onClick={this.goBack} href="#" className="back-button">&lt;</a> : null}
+        <span className="input-container">
           <input placeholder={this.state.placeholder} onKeyPress={this.addItem} type="text" ref={c => this.text = c}/>
-        </div>
+        </span>
         <ul>
           {this.state.items.map(item => {
             return (
-              <li>
-                <a name={item} onClick={this.changeRecipients} href="">{item}</a>
+              <li name={item} onClick={this.changeRecipients}>
+                <span>{item}</span>
                 <a name={item} onClick={this.deleteItem} style={{float: 'right'}} href="">&#10005;</a>
               </li>
             );

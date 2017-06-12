@@ -1,4 +1,9 @@
 import React, {Component} from 'react';
+
+const style = {
+
+};
+
 export default class Lists extends Component {
 
   constructor(props) {
@@ -33,7 +38,7 @@ export default class Lists extends Component {
 
   render() {
     return (
-      <ul>
+      <ul className="gmails-lists-list">
         {this.state.items.map(item => <li><a name={item} onClick={this.fillRecipients} href="">{item}</a></li>)}
       </ul>
     );
