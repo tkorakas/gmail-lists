@@ -1,17 +1,23 @@
 import React, {Component} from 'react';
 import cleanSpecialCharactersAndRemoveSpaces from '../../utils/StringHelpers';
 
-export default class List extends Component {
+export default class RecipientsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: []
+      items: [],
+      storage: 'gmail_lists',
+      placeholder: 'Add new group'
     };
 
     this.addItem = this.addItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.saveToChromeStorage = this.saveToChromeStorage.bind(this);
+    this.changeRecipients = this.changeRecipients.bind(this);
+    this.goBack = this.goBack.bind(this);
     this.loadLists = this.loadLists.bind(this);
+    this.openDonateButton = this.openDonateButton.bind(this);
+    this.openGoogleForm = this.openGoogleForm.bind(this);
   }
 
   componentDidMount() {
@@ -117,14 +123,15 @@ export default class List extends Component {
   render() {
     return (
       <div>
+        {this.state.placeholder == 'Add recipients' ? <a onClick={this.goBack} href="#" className="back-button">&lt;</a> : null}
         <span className="input-container">
-          <input placeholder='Create new list' onKeyPress={this.addItem} type="text" ref={c => this.text = c}/>
+          <input placeholder={this.state.placeholder} onKeyPress={this.addItem} type="text" ref={c => this.text = c}/>
         </span>
         <ul>
           {this.state.items.map(item => {
             return (
-              <li onClick={() => this.props.changePage(item)}>
-                <span>{item}</span>
+              <li>
+                <a name={item} onClick={this.changeRecipients}>{item}</a>
                 <a name={item} onClick={this.deleteItem} style={{float: 'right'}} href="">&#10005;</a>
               </li>
             );

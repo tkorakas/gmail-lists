@@ -2,7 +2,8 @@
 
 body {
   font-size: 15px;
-  min-width: 400px;
+  min-width: 200px;
+  max-width: 201px;
   font-weight: 400;
 }
 
@@ -36,4 +37,14 @@ ul {
 
 .back-button {
   float: left;
+}
+
+.donate-section {
+  a {
+    color: blue;
+  }
+  padding: 0 5px;
+  .google-form {
+    float: right;
+  }
 }
