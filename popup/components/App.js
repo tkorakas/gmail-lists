@@ -11,7 +11,6 @@ export default class App extends Component {
     };
 
     this.openDonateButton = this.openDonateButton.bind(this);
-    this.openGoogleForm = this.openGoogleForm.bind(this);
     this.changePage = this.changePage.bind(this);
     this.renderPage = this.renderPage.bind(this);
   }
@@ -21,13 +20,6 @@ export default class App extends Component {
    */
   openDonateButton(e) {
     chrome.tabs.create({url: 'https://www.paypal.me/tkorakas/2'});
-  }
-
-  /**
-   * Redirect to Google form.
-   */
-  openGoogleForm(e) {
-    chrome.tabs.create({url: 'https://goo.gl/forms/cYNi93wGUe1hDsYt1'});
   }
 
   /**
@@ -52,17 +44,17 @@ export default class App extends Component {
    * Render List or recipients page based on state,
    */
   renderPage() {
-    return this.state.page === 'list' ? <List changePage={this.changePage}/> : <RecipientsList item={this.state.item} changePage={this.changePage}/>
+    return this.state.page === 'list' ? <List changePage={this.changePage}/> :
+      <RecipientsList item={this.state.item} changePage={this.changePage}/>
   }
 
   render() {
     return (
       <div>
         {this.renderPage()}
-        <div className="donate-section">
+        <footer className="donate-section">
           <a onClick={this.openDonateButton} href="">Donate a beer</a>
-          <a className="google-form" onClick={this.openGoogleForm} href="">Bug/Feature</a>
-        </div>
+        </footer>
       </div>
     );
   }

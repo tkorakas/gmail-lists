@@ -8,5 +8,6 @@
  *  Normalized string.
  */
 export default function cleanSpecialCharactersAndRemoveSpaces(string) {
-  return string.replace(/[^a-zA-Z]/g, "");
+  string = string.replace(/ /g, '')
+  return string.replace(/[^a-zA-Z1-9]/g, '_');
 }

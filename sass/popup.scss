@@ -5,6 +5,7 @@ body {
   min-width: 200px;
   max-width: 201px;
   font-weight: 400;
+  min-height: 300px;
 }
 
 .input-container {
@@ -22,15 +23,22 @@ a {
   color: black;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-  li {
-    cursor: pointer;
-    padding: 0 5px;
-    line-height: 30px;
-    &:nth-child(even) {
-      background-color: $gmail-grey;
+.app-list {
+  ul {
+    list-style: none;
+    padding: 0;
+    height: 250px;
+    overflow: hidden;
+    overflow-y: scroll;
+    span {
+      cursor: pointer;
+    }
+    li {
+      padding: 0 5px;
+      line-height: 30px;
+      &:nth-child(even) {
+        background-color: $gmail-grey;
+      }
     }
   }
 }
@@ -40,11 +48,11 @@ ul {
 }
 
 .donate-section {
+  margin: 10px 0;
+  position: absolute;
+  bottom: 0;
   a {
     color: blue;
-  }
-  padding: 0 5px;
-  .google-form {
-    float: right;
+    text-align: center;
   }
 }

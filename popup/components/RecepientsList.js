@@ -4,20 +4,24 @@ import cleanSpecialCharactersAndRemoveSpaces from '../../utils/StringHelpers';
 export default class RecipientsList extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props.item, 'before');
+    const item = cleanSpecialCharactersAndRemoveSpaces(this.props.item);
+    console.log(item, 'after');
+
+
+    const storageKey = `gmail_lists_${item}`;
+    console.log(storageKey, 'storageKey');
+
+    console.log(storageKey);
     this.state = {
       items: [],
-      storage: 'gmail_lists',
-      placeholder: 'Add new group'
+      storageKey,
     };
 
     this.addItem = this.addItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.saveToChromeStorage = this.saveToChromeStorage.bind(this);
-    this.changeRecipients = this.changeRecipients.bind(this);
-    this.goBack = this.goBack.bind(this);
     this.loadLists = this.loadLists.bind(this);
-    this.openDonateButton = this.openDonateButton.bind(this);
-    this.openGoogleForm = this.openGoogleForm.bind(this);
   }
 
   componentDidMount() {
@@ -25,9 +29,11 @@ export default class RecipientsList extends Component {
   }
 
   loadLists() {
-    chrome.storage.sync.get(this.state.storage, (data) => {
+    console.log(this.state.storageKey)
+    chrome.storage.sync.get(this.state.storageKey, (data) => {
+      console.log(data);
       this.setState({
-        items: data[this.state.storage] != undefined ? data[this.state.storage] : [],
+        items: data[this.state.storageKey] !== undefined ? data[this.state.storageKey] : [],
       })
     });
   }
@@ -36,12 +42,14 @@ export default class RecipientsList extends Component {
    * Add new list.
    */
   addItem(e) {
-    if (e.key == 'Enter') {
+    if (e.key === 'Enter') {
       console.log(this.text.value);
+      const newRecipient = this.text.value.trim();
+
       // Check if list name already exists.
-      if (!this.state.items.includes(this.text.value)) {
+      if (!this.state.items.includes(newRecipient)) {
         // Add new item to array and save to chrome storage and update state.
-        const items = [...this.state.items, this.text.value];
+        const items = [...this.state.items, newRecipient];
         this.saveToChromeStorage(items);
       }
 
@@ -56,38 +64,8 @@ export default class RecipientsList extends Component {
     e.preventDefault();
     e.stopPropagation();
     // Remove item from array and save to chrome storage and update state.
-    const items = this.state.items.filter((item) => item != e.target.name);
-    // this.saveToChromeStorage(items);
-    chrome.storage.sync.remove(`gmails_lists_${e.target.name}`, () => {
-      this.setState({
-        items
-      })
-    });
-  }
-
-  /**
-   * Change to recipients view.
-   */
-  changeRecipients(e) {
-    e.preventDefault();
-    const name = e.target.name;
-    console.log(e.target.name);
-    chrome.storage.sync.get(`gmail_lists_${name}`, (data) => {
-      console.log(data);
-      this.setState({
-        items: data[`gmail_lists_${name}`] != undefined ? data[`gmail_lists_${name}`] : [],
-        storage: `gmail_lists_${name}`,
-        placeholder: 'Add recipients'
-      });
-    });
-  }
-
-  goBack(e) {
-    e.preventDefault();
-    this.setState({
-      placeholder: 'Add new group',
-      storage: 'gmail_lists',
-    }, () => this.loadLists());
+    const items = this.state.items.filter((item) => item !== e.target.name);
+    this.saveToChromeStorage(items);
   }
 
   /**
@@ -98,7 +76,7 @@ export default class RecipientsList extends Component {
    */
   saveToChromeStorage(items) {
     let objectToSave = {};
-    objectToSave[this.state.storage] = items;
+    objectToSave[this.state.storageKey] = items;
     chrome.storage.sync.set(objectToSave, () => {
       this.setState({
         items,
@@ -106,32 +84,18 @@ export default class RecipientsList extends Component {
     });
   }
 
-  /**
-   * Redirect to donate button.
-   */
-  openDonateButton(e) {
-    chrome.tabs.create({url: 'https://www.paypal.me/tkorakas/2'});
-  }
-
-  /**
-   * Redirect to Google form.
-   */
-  openGoogleForm(e) {
-    chrome.tabs.create({url: 'https://goo.gl/forms/cYNi93wGUe1hDsYt1'});
-  }
-
   render() {
     return (
       <div>
-        {this.state.placeholder == 'Add recipients' ? <a onClick={this.goBack} href="#" className="back-button">&lt;</a> : null}
+        <a onClick={() => this.props.changePage()} href="#" className="back-button">&lt;</a>
         <span className="input-container">
-          <input placeholder={this.state.placeholder} onKeyPress={this.addItem} type="text" ref={c => this.text = c}/>
+          <input placeholder={this.state.placeholder} onKeyPress={this.addItem} type="email" ref={c => this.text = c} />
         </span>
         <ul>
           {this.state.items.map(item => {
             return (
               <li>
-                <a name={item} onClick={this.changeRecipients}>{item}</a>
+                <span>{item}</span>
                 <a name={item} onClick={this.deleteItem} style={{float: 'right'}} href="">&#10005;</a>
               </li>
             );
