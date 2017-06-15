@@ -9743,10 +9743,11 @@ var List = function (_Component) {
     key: 'addItem',
     value: function addItem(e) {
       if (e.key === 'Enter') {
+        var trimmedValue = this.text.value.trim();
         // Check if list name already exists.
-        if (!this.state.items.includes(this.text.value)) {
+        if (!this.state.items.includes(trimmedValue)) {
           // Add new item to array and save to chrome storage and update state.
-          var items = [].concat(_toConsumableArray(this.state.items), [this.text.value]);
+          var items = [trimmedValue].concat(_toConsumableArray(this.state.items));
           this.saveToChromeStorage(items);
         }
 
@@ -9827,7 +9828,7 @@ var List = function (_Component) {
               ),
               _react2.default.createElement(
                 'a',
-                { name: item, onClick: _this5.deleteItem, style: { float: 'right' }, href: '' },
+                { name: item, onClick: _this5.deleteItem, className: 'delete-button', href: '' },
                 '\u2715'
               )
             );
@@ -9905,7 +9906,6 @@ var RecipientsList = function (_Component) {
     value: function loadLists() {
       var _this2 = this;
 
-      console.log(this.state.storageKey);
       chrome.storage.sync.get(this.state.storageKey, function (data) {
         console.log(data);
         _this2.setState({
@@ -9928,7 +9928,7 @@ var RecipientsList = function (_Component) {
         // Check if list name already exists.
         if (!this.state.items.includes(newRecipient)) {
           // Add new item to array and save to chrome storage and update state.
-          var items = [].concat(_toConsumableArray(this.state.items), [newRecipient]);
+          var items = [newRecipient].concat(_toConsumableArray(this.state.items));
           this.saveToChromeStorage(items);
         }
 
@@ -9979,7 +9979,7 @@ var RecipientsList = function (_Component) {
 
       return _react2.default.createElement(
         'div',
-        null,
+        { className: 'app-list' },
         _react2.default.createElement(
           'a',
           { onClick: function onClick() {
@@ -9990,7 +9990,7 @@ var RecipientsList = function (_Component) {
         _react2.default.createElement(
           'span',
           { className: 'input-container' },
-          _react2.default.createElement('input', { placeholder: this.state.placeholder, onKeyPress: this.addItem, type: 'email', ref: function ref(c) {
+          _react2.default.createElement('input', { placeholder: this.state.placeholder, onKeyPress: this.addItem, type: 'text', ref: function ref(c) {
               return _this4.text = c;
             } })
         ),

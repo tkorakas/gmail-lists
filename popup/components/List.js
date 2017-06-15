@@ -31,10 +31,11 @@ export default class List extends Component {
    */
   addItem(e) {
     if (e.key === 'Enter') {
+      const trimmedValue = this.text.value.trim();
       // Check if list name already exists.
-      if (!this.state.items.includes(this.text.value)) {
+      if (!this.state.items.includes(trimmedValue)) {
         // Add new item to array and save to chrome storage and update state.
-        const items = [...this.state.items, this.text.value];
+        const items = [trimmedValue, ...this.state.items];
         this.saveToChromeStorage(items);
       }
 
@@ -84,7 +85,7 @@ export default class List extends Component {
             return (
               <li onClick={() => this.props.changePage(item)}>
                 <span>{item}</span>
-                <a name={item} onClick={this.deleteItem} style={{float: 'right'}} href="">&#10005;</a>
+                <a name={item} onClick={this.deleteItem} className="delete-button" href="">&#10005;</a>
               </li>
             );
           })}

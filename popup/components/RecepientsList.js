@@ -22,7 +22,6 @@ export default class RecipientsList extends Component {
   }
 
   loadLists() {
-    console.log(this.state.storageKey)
     chrome.storage.sync.get(this.state.storageKey, (data) => {
       console.log(data);
       this.setState({
@@ -42,7 +41,7 @@ export default class RecipientsList extends Component {
       // Check if list name already exists.
       if (!this.state.items.includes(newRecipient)) {
         // Add new item to array and save to chrome storage and update state.
-        const items = [...this.state.items, newRecipient];
+        const items = [newRecipient, ...this.state.items];
         this.saveToChromeStorage(items);
       }
 
@@ -79,10 +78,10 @@ export default class RecipientsList extends Component {
 
   render() {
     return (
-      <div>
+      <div className="app-list">
         <a onClick={() => this.props.changePage()} href="#" className="back-button">&lt;</a>
         <span className="input-container">
-          <input placeholder={this.state.placeholder} onKeyPress={this.addItem} type="email" ref={c => this.text = c} />
+          <input placeholder={this.state.placeholder} onKeyPress={this.addItem} type="text" ref={c => this.text = c} />
         </span>
         <ul>
           {this.state.items.map(item => {
