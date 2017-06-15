@@ -9990,7 +9990,7 @@ var RecipientsList = function (_Component) {
         _react2.default.createElement(
           'span',
           { className: 'input-container' },
-          _react2.default.createElement('input', { placeholder: this.state.placeholder, onKeyPress: this.addItem, type: 'text', ref: function ref(c) {
+          _react2.default.createElement('input', { placeholder: 'Add new recipient', onKeyPress: this.addItem, type: 'text', ref: function ref(c) {
               return _this4.text = c;
             } })
         ),

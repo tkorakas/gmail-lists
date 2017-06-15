@@ -81,7 +81,7 @@ export default class RecipientsList extends Component {
       <div className="app-list">
         <a onClick={() => this.props.changePage()} href="#" className="back-button">&lt;</a>
         <span className="input-container">
-          <input placeholder={this.state.placeholder} onKeyPress={this.addItem} type="text" ref={c => this.text = c} />
+          <input placeholder="Add new recipient" onKeyPress={this.addItem} type="text" ref={c => this.text = c} />
         </span>
         <ul>
           {this.state.items.map(item => {
