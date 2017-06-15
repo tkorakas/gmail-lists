@@ -50,7 +50,11 @@ export default class List extends Component {
     e.stopPropagation();
     // Remove item from array and save to chrome storage and update state.
     const items = this.state.items.filter((item) => item !== e.target.name);
-    this.saveToChromeStorage(items)
+    const cleanedName = cleanSpecialCharactersAndRemoveSpaces(e.target.name);
+    const storageKey = `gmail_lists_${cleanedName}`;
+    chrome.storage.sync.remove(storageKey, () => {
+      this.saveToChromeStorage(items);
+    });
   }
 
   /**

@@ -4,15 +4,8 @@ import cleanSpecialCharactersAndRemoveSpaces from '../../utils/StringHelpers';
 export default class RecipientsList extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.item, 'before');
     const item = cleanSpecialCharactersAndRemoveSpaces(this.props.item);
-    console.log(item, 'after');
-
-
     const storageKey = `gmail_lists_${item}`;
-    console.log(storageKey, 'storageKey');
-
-    console.log(storageKey);
     this.state = {
       items: [],
       storageKey,
