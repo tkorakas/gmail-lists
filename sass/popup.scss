@@ -37,6 +37,8 @@ a {
     overflow-y: scroll;
     li {
       transition: all 0.4s ease-out;
+      padding: 0 5px;
+      line-height: 30px;
       &.show {
         animation: 1s ease-out 0s 1 slideDownAndFade;
       }
@@ -50,9 +52,6 @@ a {
         vertical-align: bottom;
         width: 150px;
       }
-      //transition: background-color .5s ease;
-      padding: 0 5px;
-      line-height: 30px;
       &:nth-child(even) {
         background-color: $grey;
       }
@@ -61,7 +60,7 @@ a {
       }
       .delete-button {
         transition: text-shadow .3s linear;
-        color: $dark-blue;
+        color: $red;
         float: right;
         &:hover {
           text-shadow: 1px 1px 2px black;

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import keyIndex from 'react-key-index';
 import cleanSpecialCharactersAndRemoveSpaces from '../utils/StringHelpers';
 
 export default class Lists extends Component {
@@ -30,9 +31,11 @@ export default class Lists extends Component {
   }
 
   render() {
+    const data = keyIndex(this.state.items, 1);
     return (
       <ul className="gmails-lists-list">
-        {this.state.items.map(item => <li><a name={item} onClick={this.fillRecipients} href="">{item}</a></li>)}
+        {data.map(item => <li key={item._id}><a name={item.value} onClick={this.fillRecipients}
+                                                            href="">{item.value}</a></li>)}
       </ul>
     );
   }

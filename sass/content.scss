@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 @import "variables";
 
 #gmail_lists_content {
@@ -5,17 +6,32 @@
   ul {
     list-style: none;
     padding: 0;
-
-    a {
-      text-decoration: none;
-      color: #444;
-    }
+    height: 150px;
+    overflow: hidden;
+    overflow-y: scroll;
     li {
       cursor: pointer;
       padding: 0 5px;
-      line-height: 25px;
+      line-height: 30px;
+      font-size: 15px;
+      font-weight: 400;
+      font-family: 'Open Sans', sans-serif;
+      a {
+        text-decoration: none;
+        cursor: pointer;
+        color: $very-dark-grey;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        vertical-align: bottom;
+        width: 150px;
+      }
       &:nth-child(even) {
         background-color: $grey;
+      }
+      &:hover {
+        background-color: $dark-grey;
       }
     }
   }

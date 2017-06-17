@@ -9224,8 +9224,6 @@ var App = function (_Component) {
     /**
      * Change page.
      *
-     * @param page
-     *  Page to change to.
      * @param item
      *  If page equals to recipients needs an item.
      */
