@@ -7,9 +7,9 @@
     "default_title": "Gmail lists",
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "assets/icon16.png",
-      "24": "assets/icon24.png",
-      "32": "assets/icon32.png"
+      "16": "assets/icon-blue16.png",
+      "24": "assets/icon-blue24.png",
+      "32": "assets/icon-blue32.png"
     }
   },
   "content_scripts": [

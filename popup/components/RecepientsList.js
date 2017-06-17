@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import keyIndex from 'react-key-index';
 import cleanSpecialCharactersAndRemoveSpaces from '../../utils/StringHelpers';
 
 export default class RecipientsList extends Component {
@@ -82,6 +83,7 @@ export default class RecipientsList extends Component {
   }
 
   render() {
+    const data = keyIndex(this.state.items, 1);
     return (
       <div className="app-list">
         <a onClick={() => this.props.changePage()} href="#" className="back-button">&lt;</a>
@@ -89,11 +91,11 @@ export default class RecipientsList extends Component {
           <input placeholder="Add new recipient" onKeyPress={this.addItem} type="text" ref={c => this.text = c} />
         </span>
         <ul ref={(c) => this.list = c}>
-          {this.state.items.map(item => {
+          {data.map(item => {
             return (
-              <li className="show">
-                <span>{item}</span>
-                <a name={item} onClick={this.deleteItem} style={{float: 'right'}} href="">&#10005;</a>
+              <li className="show" key={item._id}>
+                <span>{item.value}</span>
+                <a name={item.value} onClick={this.deleteItem} style={{float: 'right'}} href="">&#10005;</a>
               </li>
             );
           })}

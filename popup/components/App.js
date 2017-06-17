@@ -31,7 +31,6 @@ export default class App extends Component {
    *  If page equals to recipients needs an item.
    */
   changePage(item = '') {
-    console.log(item, 'page changed');
     const page = this.state.page === 'list' ? 'recipients' : 'list';
 
     this.setState({
