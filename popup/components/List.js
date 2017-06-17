@@ -35,8 +35,8 @@ export default class List extends Component {
       // Check if list name already exists.
       if (!this.state.items.includes(trimmedValue)) {
         // Add new item to array and save to chrome storage and update state.
-        const items = [trimmedValue, ...this.state.items];
-        this.saveToChromeStorage(items);
+        const items = [...this.state.items, trimmedValue];
+        this.saveToChromeStorage(items, true);
       }
 
       this.text.value = '';
@@ -59,17 +59,24 @@ export default class List extends Component {
   }
 
   /**
-   * Set items to chrome storage and update local state.
+   * Set items to Chrome storage and update local state.
    *
    * @param items
    *  Array with string items.
+   * @param isNewItem
+   *  Check if is new item to scroll.
    */
-  saveToChromeStorage(items) {
+  saveToChromeStorage(items, isNewItem = false) {
     let objectToSave = {};
     objectToSave['gmail_lists'] = items;
     chrome.storage.sync.set(objectToSave, () => {
       this.setState({
         items,
+      }, () => {
+        if(isNewItem) {
+          // Scroll to last item.
+          this.list.scrollTop += 30 * (this.state.items.length);
+        }
       });
     });
   }
@@ -80,10 +87,10 @@ export default class List extends Component {
         <span className="input-container">
           <input placeholder='Create new list' onKeyPress={this.addItem} type="text" ref={c => this.text = c}/>
         </span>
-        <ul>
+        <ul ref={(c) => this.list = c}>
           {this.state.items.map(item => {
             return (
-              <li onClick={() => this.props.changePage(item)}>
+              <li onClick={() => this.props.changePage(item)} className="show">
                 <span>{item}</span>
                 <a name={item} onClick={this.deleteItem} className="delete-button" href="">&#10005;</a>
               </li>

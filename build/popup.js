@@ -9747,8 +9747,8 @@ var List = function (_Component) {
         // Check if list name already exists.
         if (!this.state.items.includes(trimmedValue)) {
           // Add new item to array and save to chrome storage and update state.
-          var items = [trimmedValue].concat(_toConsumableArray(this.state.items));
-          this.saveToChromeStorage(items);
+          var items = [].concat(_toConsumableArray(this.state.items), [trimmedValue]);
+          this.saveToChromeStorage(items, true);
         }
 
         this.text.value = '';
@@ -9778,10 +9778,12 @@ var List = function (_Component) {
     }
 
     /**
-     * Set items to chrome storage and update local state.
+     * Set items to Chrome storage and update local state.
      *
      * @param items
      *  Array with string items.
+     * @param isNewItem
+     *  Check if is new item to scroll.
      */
 
   }, {
@@ -9789,11 +9791,18 @@ var List = function (_Component) {
     value: function saveToChromeStorage(items) {
       var _this4 = this;
 
+      var isNewItem = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
       var objectToSave = {};
       objectToSave['gmail_lists'] = items;
       chrome.storage.sync.set(objectToSave, function () {
         _this4.setState({
           items: items
+        }, function () {
+          if (isNewItem) {
+            // Scroll to last item.
+            _this4.list.scrollTop += 30 * _this4.state.items.length;
+          }
         });
       });
     }
@@ -9814,13 +9823,15 @@ var List = function (_Component) {
         ),
         _react2.default.createElement(
           'ul',
-          null,
+          { ref: function ref(c) {
+              return _this5.list = c;
+            } },
           this.state.items.map(function (item) {
             return _react2.default.createElement(
               'li',
               { onClick: function onClick() {
                   return _this5.props.changePage(item);
-                } },
+                }, className: 'show' },
               _react2.default.createElement(
                 'span',
                 null,
@@ -9907,7 +9918,6 @@ var RecipientsList = function (_Component) {
       var _this2 = this;
 
       chrome.storage.sync.get(this.state.storageKey, function (data) {
-        console.log(data);
         _this2.setState({
           items: data[_this2.state.storageKey] !== undefined ? data[_this2.state.storageKey] : []
         });
@@ -9922,14 +9932,13 @@ var RecipientsList = function (_Component) {
     key: 'addItem',
     value: function addItem(e) {
       if (e.key === 'Enter') {
-        console.log(this.text.value);
         var newRecipient = this.text.value.trim();
 
         // Check if list name already exists.
         if (!this.state.items.includes(newRecipient)) {
           // Add new item to array and save to chrome storage and update state.
-          var items = [newRecipient].concat(_toConsumableArray(this.state.items));
-          this.saveToChromeStorage(items);
+          var items = [].concat(_toConsumableArray(this.state.items), [newRecipient]);
+          this.saveToChromeStorage(items, true);
         }
 
         this.text.value = '';
@@ -9957,6 +9966,8 @@ var RecipientsList = function (_Component) {
      *
      * @param items
      *  Array with string items.
+     * @param isNewItem
+     *  Check if is new item to scroll.
      */
 
   }, {
@@ -9964,11 +9975,18 @@ var RecipientsList = function (_Component) {
     value: function saveToChromeStorage(items) {
       var _this3 = this;
 
+      var isNewItem = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
       var objectToSave = {};
       objectToSave[this.state.storageKey] = items;
       chrome.storage.sync.set(objectToSave, function () {
         _this3.setState({
           items: items
+        }, function () {
+          if (isNewItem) {
+            // Scroll to last item.
+            _this3.list.scrollTop += 30 * _this3.state.items.length;
+          }
         });
       });
     }
@@ -9996,11 +10014,13 @@ var RecipientsList = function (_Component) {
         ),
         _react2.default.createElement(
           'ul',
-          null,
+          { ref: function ref(c) {
+              return _this4.list = c;
+            } },
           this.state.items.map(function (item) {
             return _react2.default.createElement(
               'li',
-              null,
+              { className: 'show' },
               _react2.default.createElement(
                 'span',
                 null,

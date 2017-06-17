@@ -23,7 +23,6 @@ export default class RecipientsList extends Component {
 
   loadLists() {
     chrome.storage.sync.get(this.state.storageKey, (data) => {
-      console.log(data);
       this.setState({
         items: data[this.state.storageKey] !== undefined ? data[this.state.storageKey] : [],
       })
@@ -35,14 +34,13 @@ export default class RecipientsList extends Component {
    */
   addItem(e) {
     if (e.key === 'Enter') {
-      console.log(this.text.value);
       const newRecipient = this.text.value.trim();
 
       // Check if list name already exists.
       if (!this.state.items.includes(newRecipient)) {
         // Add new item to array and save to chrome storage and update state.
-        const items = [newRecipient, ...this.state.items];
-        this.saveToChromeStorage(items);
+        const items = [...this.state.items, newRecipient];
+        this.saveToChromeStorage(items, true);
       }
 
       this.text.value = '';
@@ -65,13 +63,20 @@ export default class RecipientsList extends Component {
    *
    * @param items
    *  Array with string items.
+   * @param isNewItem
+   *  Check if is new item to scroll.
    */
-  saveToChromeStorage(items) {
+  saveToChromeStorage(items, isNewItem = false) {
     let objectToSave = {};
     objectToSave[this.state.storageKey] = items;
     chrome.storage.sync.set(objectToSave, () => {
       this.setState({
         items,
+      }, () => {
+        if(isNewItem) {
+          // Scroll to last item.
+          this.list.scrollTop += 30 * (this.state.items.length);
+        }
       });
     });
   }
@@ -83,10 +88,10 @@ export default class RecipientsList extends Component {
         <span className="input-container">
           <input placeholder="Add new recipient" onKeyPress={this.addItem} type="text" ref={c => this.text = c} />
         </span>
-        <ul>
+        <ul ref={(c) => this.list = c}>
           {this.state.items.map(item => {
             return (
-              <li>
+              <li className="show">
                 <span>{item}</span>
                 <a name={item} onClick={this.deleteItem} style={{float: 'right'}} href="">&#10005;</a>
               </li>

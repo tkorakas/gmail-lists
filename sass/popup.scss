@@ -1,5 +1,6 @@
 @import "variables";
 @import "animations";
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 body {
   font-size: 15px;
@@ -7,6 +8,7 @@ body {
   max-width: 201px;
   font-weight: 400;
   min-height: 300px;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .input-container {
@@ -15,39 +17,51 @@ body {
 }
 
 input[type="text"] {
+  border-left: 0;
   width: 100%;
   height: 20px;
 }
 
 a {
   text-decoration: none;
-  color: black;
+  color: $very-dark-grey;
 }
 
 .app-list {
-  animation: 0.3s ease-out 0s 1 slideInFromLeft;
+  animation: 0.25s ease-out 0s 1 slideInFromRight;
   ul {
     list-style: none;
     padding: 0;
     height: 250px;
     overflow: hidden;
     overflow-y: scroll;
-    span, a {
-      cursor: pointer;
-    }
     li {
-      transition: background-color .5s ease;
+      transition: all 0.4s ease-out;
+      &.show {
+        animation: 1s ease-out 0s 1 slideDownAndFade;
+      }
+      span {
+        cursor: pointer;
+        color: $very-dark-grey;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        vertical-align: bottom;
+        width: 150px;
+      }
+      //transition: background-color .5s ease;
       padding: 0 5px;
       line-height: 30px;
       &:nth-child(even) {
-        background-color: $gmail-grey;
+        background-color: $grey;
       }
       &:hover {
-        background-color: darken($gmail-grey, 20%);
+        background-color: $dark-grey;
       }
       .delete-button {
         transition: text-shadow .3s linear;
-        color: red;
+        color: $dark-blue;
         float: right;
         &:hover {
           text-shadow: 1px 1px 2px black;
@@ -60,14 +74,13 @@ a {
 
 .back-button {
   float: left;
+  font-size: 20px;
+  margin-right: 5px;
 }
 
 .donate-section {
-  margin: 10px 0;
-  position: absolute;
   bottom: 0;
-  a {
-    color: blue;
-    text-align: center;
+  &:hover {
+    text-decoration: underline;
   }
 }
