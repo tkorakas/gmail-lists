@@ -11,6 +11,7 @@ export default class App extends Component {
     };
 
     this.openDonateButton = this.openDonateButton.bind(this);
+    this.openBugFormButton = this.openBugFormButton.bind(this);
     this.changePage = this.changePage.bind(this);
     this.renderPage = this.renderPage.bind(this);
   }
@@ -20,6 +21,13 @@ export default class App extends Component {
    */
   openDonateButton(e) {
     chrome.tabs.create({url: 'https://www.paypal.me/tkorakas/2'});
+  }
+
+  /**
+   * Redirect to bug form button.
+   */
+  openBugFormButton(e) {
+    chrome.tabs.create({url: 'https://goo.gl/forms/cYNi93wGUe1hDsYt1'});
   }
 
   /**
@@ -50,7 +58,8 @@ export default class App extends Component {
       <div>
         {this.renderPage()}
         <footer className="donate-section">
-          <a onClick={this.openDonateButton} href="">Donate a beer</a>
+          <a onClick={this.openBugFormButton} href="">Report a bug</a>
+          {/*<a onClick={this.openDonateButton} href="">Donate a beer</a>*/}
         </footer>
       </div>
     );

@@ -9205,6 +9205,7 @@ var App = function (_Component) {
     };
 
     _this.openDonateButton = _this.openDonateButton.bind(_this);
+    _this.openBugFormButton = _this.openBugFormButton.bind(_this);
     _this.changePage = _this.changePage.bind(_this);
     _this.renderPage = _this.renderPage.bind(_this);
     return _this;
@@ -9219,6 +9220,16 @@ var App = function (_Component) {
     key: 'openDonateButton',
     value: function openDonateButton(e) {
       chrome.tabs.create({ url: 'https://www.paypal.me/tkorakas/2' });
+    }
+
+    /**
+     * Redirect to bug form button.
+     */
+
+  }, {
+    key: 'openBugFormButton',
+    value: function openBugFormButton(e) {
+      chrome.tabs.create({ url: 'https://goo.gl/forms/cYNi93wGUe1hDsYt1' });
     }
 
     /**
@@ -9262,8 +9273,8 @@ var App = function (_Component) {
           { className: 'donate-section' },
           _react2.default.createElement(
             'a',
-            { onClick: this.openDonateButton, href: '' },
-            'Donate a beer'
+            { onClick: this.openBugFormButton, href: '' },
+            'Report a bug'
           )
         )
       );
