@@ -60,3 +60,4 @@ typings/
 .idea
 .DS_Store
 content/AppId.js
+build.*
