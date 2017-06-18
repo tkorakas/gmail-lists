@@ -1,8 +1,9 @@
 {
   "manifest_version": 2,
   "name": "Gmail lists",
-  "description": "Create mail lists to reuse fast on your emails.",
-  "version": "0.0.1",
+  "description": "Create mail lists and inject them easily on Gmail.",
+  "version": "0.0.2",
+  "author": "Thanos Korakas",
   "browser_action": {
     "default_title": "Gmail lists",
     "default_popup": "popup.html",

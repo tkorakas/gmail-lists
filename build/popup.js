@@ -9467,7 +9467,7 @@ var List = function (_Component) {
                 }, className: 'show' },
               _react2.default.createElement(
                 'span',
-                null,
+                { title: item.value },
                 item.value
               ),
               _react2.default.createElement(
@@ -9661,12 +9661,12 @@ var RecipientsList = function (_Component) {
               { className: 'show', key: item._id },
               _react2.default.createElement(
                 'span',
-                null,
+                { title: item.value },
                 item.value
               ),
               _react2.default.createElement(
                 'a',
-                { name: item.value, onClick: _this4.deleteItem, style: { float: 'right' }, href: '' },
+                { className: 'delete-button', name: item.value, onClick: _this4.deleteItem, style: { float: 'right' }, href: '' },
                 '\u2715'
               )
             );

@@ -94,8 +94,8 @@ export default class RecipientsList extends Component {
           {data.map(item => {
             return (
               <li className="show" key={item._id}>
-                <span>{item.value}</span>
-                <a name={item.value} onClick={this.deleteItem} style={{float: 'right'}} href="">&#10005;</a>
+                <span title={item.value}>{item.value}</span>
+                <a className="delete-button" name={item.value} onClick={this.deleteItem} style={{float: 'right'}} href="">&#10005;</a>
               </li>
             );
           })}

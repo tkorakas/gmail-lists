@@ -93,7 +93,7 @@ export default class List extends Component {
           {data.map(item => {
             return (
               <li key={item._id} onClick={() => this.props.changePage(item.value)} className="show">
-                <span>{item.value}</span>
+                <span title={item.value}>{item.value}</span>
                 <a name={item.value} onClick={this.deleteItem} className="delete-button" href="">&#10005;</a>
               </li>
             );

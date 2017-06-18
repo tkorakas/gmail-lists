@@ -35,6 +35,13 @@ gulp.task('sass', function() {
     .pipe(plugins.livereload());
 });
 
+// Zip app to upload on Google web store.
+gulp.task('zip-app', () =>
+  gulp.src('build/*')
+    .pipe(plugins.zip('build.zip'))
+    .pipe(gulp.dest('./'))
+);
+
 gulp.task('popup-js', ['clean'], (cb) => {
   webpack(popupWebpackConfig, (err, stats) => {
     if (err) throw new plugins.util.PluginError('webpack', err);
