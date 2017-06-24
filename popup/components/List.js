@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import keyIndex from 'react-key-index';
+import {CSSTransitionGroup} from 'react-transition-group' // ES6
 import cleanSpecialCharactersAndRemoveSpaces from '../../utils/StringHelpers';
 
 export default class List extends Component {
@@ -74,7 +75,7 @@ export default class List extends Component {
       this.setState({
         items,
       }, () => {
-        if(isNewItem) {
+        if (isNewItem) {
           // Scroll to last item.
           this.list.scrollTop += 30 * (this.state.items.length);
         }
@@ -90,14 +91,19 @@ export default class List extends Component {
           <input placeholder='Create new list' onKeyPress={this.addItem} type="text" ref={c => this.text = c}/>
         </span>
         <ul ref={(c) => this.list = c}>
-          {data.map(item => {
-            return (
-              <li key={item._id} onClick={() => this.props.changePage(item.value)} className="show">
-                <span title={item.value}>{item.value}</span>
-                <a name={item.value} onClick={this.deleteItem} className="delete-button" href="">&#10005;</a>
-              </li>
-            );
-          })}
+          <CSSTransitionGroup
+            transitionName="list-item"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={300}>
+            {data.map(item => {
+              return (
+                <li key={item._id} onClick={() => this.props.changePage(item.value)}>
+                  <span title={item.value}>{item.value}</span>
+                  <a name={item.value} onClick={this.deleteItem} className="delete-button" href="">&#10005;</a>
+                </li>
+              );
+            })}
+          </CSSTransitionGroup>
         </ul>
       </div>
     );

@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Gmail lists",
   "description": "Create mail lists and inject them easily on Gmail.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Thanos Korakas",
   "browser_action": {
     "default_title": "Gmail lists",
