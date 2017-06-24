@@ -18,6 +18,9 @@ export default class List extends Component {
 
   componentDidMount() {
     this.loadLists();
+    chrome.runtime.onMessage.addListener((request, sender) => {
+        console.log(request, sender);
+      });
   }
 
   loadLists() {
@@ -55,6 +58,18 @@ export default class List extends Component {
     const items = this.state.items.filter((item) => item !== e.target.name);
     const cleanedName = cleanSpecialCharactersAndRemoveSpaces(e.target.name);
     const storageKey = `gmail_lists_${cleanedName}`;
+
+    // Add item on queue for deletion.
+    chrome.storage.sync.get('gmail_lists_delete_queue', (data) => {
+      let queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
+      console.log(queue);
+      queue.push(storageKey);
+      chrome.alarms.create('gmail_lists_delete_item', {when: Date.now() + 1000});
+      chrome.alarms.getAll((a) => console.log(a));
+    });
+
+    // remove from background script.
+    return;
     chrome.storage.sync.remove(storageKey, () => {
       this.saveToChromeStorage(items);
     });

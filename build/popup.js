@@ -9778,6 +9778,9 @@ var List = function (_Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.loadLists();
+      chrome.runtime.onMessage.addListener(function (request, sender) {
+        console.log(request, sender);
+      });
     }
   }, {
     key: 'loadLists',
@@ -9828,6 +9831,20 @@ var List = function (_Component) {
       });
       var cleanedName = (0, _StringHelpers2.default)(e.target.name);
       var storageKey = 'gmail_lists_' + cleanedName;
+
+      // Add item on queue for deletion.
+      chrome.storage.sync.get('gmail_lists_delete_queue', function (data) {
+        var queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
+        console.log(queue);
+        queue.push(storageKey);
+        chrome.alarms.create('gmail_lists_delete_item', { when: Date.now() + 1000 });
+        chrome.alarms.getAll(function (a) {
+          return console.log(a);
+        });
+      });
+
+      // remove from background script.
+      return;
       chrome.storage.sync.remove(storageKey, function () {
         _this3.saveToChromeStorage(items);
       });

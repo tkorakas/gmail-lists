@@ -28,9 +28,13 @@
       ]
     }
   ],
+  "background": {
+    "scripts": ["background.js"]
+  },
   "permissions": [
     "storage",
-    "tabs"
+    "tabs",
+    "alarms"
   ],
   "web_accessible_resources": [
     "assets/*",
