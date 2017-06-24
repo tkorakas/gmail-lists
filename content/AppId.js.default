@@ -1,0 +1,2 @@
+const appID = 'app_id';
+export default appID;
