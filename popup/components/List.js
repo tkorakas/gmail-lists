@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import keyIndex from 'react-key-index';
-import {CSSTransitionGroup} from 'react-transition-group' // ES6
+import {CSSTransitionGroup} from 'react-transition-group';
 import cleanSpecialCharactersAndRemoveSpaces from '../../utils/StringHelpers';
 
 export default class List extends Component {
@@ -88,7 +88,7 @@ export default class List extends Component {
     return (
       <div className="app-list">
         <span className="input-container">
-          <input placeholder='Create new list' onKeyPress={this.addItem} type="text" ref={c => this.text = c}/>
+          <input placeholder="Create new list" onKeyPress={this.addItem} type="text" ref={c => this.text = c}/>
         </span>
         <ul ref={(c) => this.list = c}>
           <CSSTransitionGroup

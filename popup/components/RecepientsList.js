@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import keyIndex from 'react-key-index';
+import {CSSTransitionGroup} from 'react-transition-group';
 import cleanSpecialCharactersAndRemoveSpaces from '../../utils/StringHelpers';
 
 export default class RecipientsList extends Component {
@@ -74,7 +75,7 @@ export default class RecipientsList extends Component {
       this.setState({
         items,
       }, () => {
-        if(isNewItem) {
+        if (isNewItem) {
           // Scroll to last item.
           this.list.scrollTop += 30 * (this.state.items.length);
         }
@@ -88,17 +89,24 @@ export default class RecipientsList extends Component {
       <div className="app-list">
         <a onClick={() => this.props.changePage()} href="#" className="back-button">&lt;</a>
         <span className="input-container">
-          <input className="recipients-input" placeholder="Add new recipient" onKeyPress={this.addItem} type="text" ref={c => this.text = c} />
+          <input className="recipients-input" placeholder="Add new recipient" onKeyPress={this.addItem} type="text"
+                 ref={c => this.text = c}/>
         </span>
         <ul ref={(c) => this.list = c}>
-          {data.map(item => {
-            return (
-              <li className="show" key={item._id}>
-                <span title={item.value}>{item.value}</span>
-                <a className="delete-button" name={item.value} onClick={this.deleteItem} style={{float: 'right'}} href="">&#10005;</a>
-              </li>
-            );
-          })}
+          <CSSTransitionGroup
+            transitionName="list-item"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={300}>
+            {data.map(item => {
+              return (
+                <li className="show" key={item._id}>
+                  <span title={item.value}>{item.value}</span>
+                  <a className="delete-button" name={item.value} onClick={this.deleteItem} style={{float: 'right'}}
+                     href="">&#10005;</a>
+                </li>
+              );
+            })}
+          </CSSTransitionGroup>
         </ul>
       </div>
     );
