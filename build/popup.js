@@ -9777,18 +9777,20 @@ var List = function (_Component) {
   _createClass(List, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      var _this2 = this;
+
       this.loadLists();
       chrome.runtime.onMessage.addListener(function (request, sender) {
-        console.log(request, sender);
+        _this2.loadLists();
       });
     }
   }, {
     key: 'loadLists',
     value: function loadLists() {
-      var _this2 = this;
+      var _this3 = this;
 
       chrome.storage.sync.get('gmail_lists', function (data) {
-        _this2.setState({
+        _this3.setState({
           items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : []
         });
       });
@@ -9821,32 +9823,31 @@ var List = function (_Component) {
   }, {
     key: 'deleteItem',
     value: function deleteItem(e) {
-      var _this3 = this;
+      var _this4 = this;
 
       e.preventDefault();
       e.stopPropagation();
       // Remove item from array and save to chrome storage and update state.
+      var itemToDelete = e.target.name;
       var items = this.state.items.filter(function (item) {
         return item !== e.target.name;
       });
-      var cleanedName = (0, _StringHelpers2.default)(e.target.name);
-      var storageKey = 'gmail_lists_' + cleanedName;
+      // const cleanedName = cleanSpecialCharactersAndRemoveSpaces(e.target.name);
+      // const storageKey = `gmail_lists_${cleanedName}`;
 
       // Add item on queue for deletion.
       chrome.storage.sync.get('gmail_lists_delete_queue', function (data) {
         var queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
-        console.log(queue);
-        queue.push(storageKey);
-        chrome.alarms.create('gmail_lists_delete_item', { when: Date.now() + 1000 });
-        chrome.alarms.getAll(function (a) {
-          return console.log(a);
+        queue.push(itemToDelete);
+        chrome.storage.sync.set({ gmail_lists_delete_queue: queue }, function () {
+          chrome.alarms.create('gmail_lists_delete_item', { when: Date.now() + 4000 });
         });
       });
 
       // remove from background script.
       return;
       chrome.storage.sync.remove(storageKey, function () {
-        _this3.saveToChromeStorage(items);
+        _this4.saveToChromeStorage(items);
       });
     }
 
@@ -9862,19 +9863,19 @@ var List = function (_Component) {
   }, {
     key: 'saveToChromeStorage',
     value: function saveToChromeStorage(items) {
-      var _this4 = this;
+      var _this5 = this;
 
       var isNewItem = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
       var objectToSave = {};
       objectToSave['gmail_lists'] = items;
       chrome.storage.sync.set(objectToSave, function () {
-        _this4.setState({
+        _this5.setState({
           items: items
         }, function () {
           if (isNewItem) {
             // Scroll to last item.
-            _this4.list.scrollTop += 30 * _this4.state.items.length;
+            _this5.list.scrollTop += 30 * _this5.state.items.length;
           }
         });
       });
@@ -9882,7 +9883,7 @@ var List = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this5 = this;
+      var _this6 = this;
 
       var data = (0, _reactKeyIndex2.default)(this.state.items, 1);
       return _react2.default.createElement(
@@ -9892,13 +9893,13 @@ var List = function (_Component) {
           'span',
           { className: 'input-container' },
           _react2.default.createElement('input', { placeholder: 'Create new list', onKeyPress: this.addItem, type: 'text', ref: function ref(c) {
-              return _this5.text = c;
+              return _this6.text = c;
             } })
         ),
         _react2.default.createElement(
           'ul',
           { ref: function ref(c) {
-              return _this5.list = c;
+              return _this6.list = c;
             } },
           _react2.default.createElement(
             _reactTransitionGroup.CSSTransitionGroup,
@@ -9910,7 +9911,7 @@ var List = function (_Component) {
               return _react2.default.createElement(
                 'li',
                 { key: item._id, onClick: function onClick() {
-                    return _this5.props.changePage(item.value);
+                    return _this6.props.changePage(item.value);
                   } },
                 _react2.default.createElement(
                   'span',
@@ -9919,7 +9920,7 @@ var List = function (_Component) {
                 ),
                 _react2.default.createElement(
                   'a',
-                  { name: item.value, onClick: _this5.deleteItem, className: 'delete-button', href: '' },
+                  { name: item.value, onClick: _this6.deleteItem, className: 'delete-button', href: '' },
                   '\u2715'
                 )
               );

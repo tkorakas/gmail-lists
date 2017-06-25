@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,15 +73,57 @@
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = cleanSpecialCharactersAndRemoveSpaces;
+/**
+ * Replace special characters and remove spaces from remove spaces.
+ *
+ * @param string
+ *  String to change.
+ *
+ * @returns string
+ *  Normalized string.
+ */
+function cleanSpecialCharactersAndRemoveSpaces(string) {
+  string = string.replace(/ /g, '');
+  return string.replace(/[^a-zA-Z1-9]/g, '_');
+}
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _StringHelpers = __webpack_require__(0);
+
+var _StringHelpers2 = _interopRequireDefault(_StringHelpers);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 // Listen for elapsed alarms.
 chrome.alarms.onAlarm.addListener(function (alarm) {
   console.log('received ');
-  chrome.runtime.sendMessage({ greeting: "hello" }, function () {
-    console.log('sent message');
+  chrome.storage.sync.get(['gmail_lists_delete_queue', 'gmail_lists'], function (data) {
+    // Set items.
+    console.log(data);
+    var queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
+    var items = data['gmail_lists'] !== undefined ? data['gmail_lists'] : [];
+    var newItemsList = items.filter(function (item) {
+      return !queue.includes(item);
+    });
+
+    chrome.storage.sync.set({ gmail_lists: newItemsList }, function () {
+      chrome.runtime.sendMessage({ greeting: "hello" }, function () {});
+
+      chrome.storage.sync.set({ gmail_lists_delete_queue: [] });
+    });
+
+    // Delete email lists.
   });
-  // chrome.storage.sync.get('gmail_lists_delete_queue', (data) => {
-  //
-  // });
 });
 
 /***/ })

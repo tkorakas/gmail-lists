@@ -19,8 +19,8 @@ export default class List extends Component {
   componentDidMount() {
     this.loadLists();
     chrome.runtime.onMessage.addListener((request, sender) => {
-        console.log(request, sender);
-      });
+      this.loadLists();
+    });
   }
 
   loadLists() {
@@ -55,17 +55,18 @@ export default class List extends Component {
     e.preventDefault();
     e.stopPropagation();
     // Remove item from array and save to chrome storage and update state.
+    const itemToDelete = e.target.name;
     const items = this.state.items.filter((item) => item !== e.target.name);
-    const cleanedName = cleanSpecialCharactersAndRemoveSpaces(e.target.name);
-    const storageKey = `gmail_lists_${cleanedName}`;
+    // const cleanedName = cleanSpecialCharactersAndRemoveSpaces(e.target.name);
+    // const storageKey = `gmail_lists_${cleanedName}`;
 
     // Add item on queue for deletion.
     chrome.storage.sync.get('gmail_lists_delete_queue', (data) => {
       let queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
-      console.log(queue);
-      queue.push(storageKey);
-      chrome.alarms.create('gmail_lists_delete_item', {when: Date.now() + 1000});
-      chrome.alarms.getAll((a) => console.log(a));
+      queue.push(itemToDelete);
+      chrome.storage.sync.set({gmail_lists_delete_queue: queue}, () => {
+        chrome.alarms.create('gmail_lists_delete_item', {when: Date.now() + 4000});
+      });
     });
 
     // remove from background script.
