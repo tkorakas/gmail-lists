@@ -8,17 +8,21 @@ export default class List extends Component {
     super(props);
     this.state = {
       items: [],
+      showUndoButton: false,
     };
 
     this.addItem = this.addItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.saveToChromeStorage = this.saveToChromeStorage.bind(this);
     this.loadLists = this.loadLists.bind(this);
+    this.undoDeletedIem = this.undoDeletedIem.bind(this);
+    this.renderUndoButton = this.renderUndoButton.bind(this);
   }
 
   componentDidMount() {
     this.loadLists();
     chrome.runtime.onMessage.addListener((request, sender) => {
+      this.setState({showUndoButton: false});
       this.loadLists();
     });
   }
@@ -66,6 +70,7 @@ export default class List extends Component {
       queue.push(itemToDelete);
       chrome.storage.sync.set({gmail_lists_delete_queue: queue}, () => {
         chrome.alarms.create('gmail_lists_delete_item', {when: Date.now() + 4000});
+        this.setState({showUndoButton: true, items});
       });
     });
 
@@ -99,6 +104,27 @@ export default class List extends Component {
     });
   }
 
+  /**
+   * Remove last item from delete queue.
+   */
+  undoDeletedIem(e) {
+    chrome.storage.sync.get('gmail_lists_delete_queue', (data) => {
+      const deleteQueue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
+      deleteQueue.pop();
+      chrome.storage.sync.set({gmail_lists_delete_queue: deleteQueue}, () => {
+        this.setState({
+          showUndoButton: false,
+        });
+        this.loadLists();
+      });
+    });
+  }
+
+  renderUndoButton() {
+    const undoElement = <button className="undo-button" onClick={this.undoDeletedIem}>Undo</button>;
+    return !this.state.showUndoButton ? null : undoElement;
+  }
+
   render() {
     const data = keyIndex(this.state.items, 1);
     return (
@@ -121,6 +147,7 @@ export default class List extends Component {
             })}
           </CSSTransitionGroup>
         </ul>
+        {this.renderUndoButton()}
       </div>
     );
   }

@@ -86,6 +86,20 @@ a {
 
     }
   }
+
+  .undo-button {
+    width: 100%;
+    border: 0;
+    color: #fff;
+    height: 30px;
+    font-size: 15px;
+    font-weight: 400;
+    background-color: rgba(0, 0, 0, 0.9);
+    opacity: 0.6;
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
 .back-button {
@@ -93,11 +107,4 @@ a {
   font-size: 25px;
   font-weight: 400;
   margin-right: 5px;
-}
-
-.donate-section {
-  bottom: 0;
-  &:hover {
-    text-decoration: underline;
-  }
 }

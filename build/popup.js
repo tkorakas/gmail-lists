@@ -9636,42 +9636,20 @@ var App = function (_Component) {
       item: ''
     };
 
-    _this.openDonateButton = _this.openDonateButton.bind(_this);
-    _this.openBugFormButton = _this.openBugFormButton.bind(_this);
     _this.changePage = _this.changePage.bind(_this);
     _this.renderPage = _this.renderPage.bind(_this);
     return _this;
   }
 
   /**
-   * Redirect to donate button.
+   * Change page.
+   *
+   * @param item
+   *  If page equals to recipients needs an item.
    */
 
 
   _createClass(App, [{
-    key: 'openDonateButton',
-    value: function openDonateButton(e) {
-      chrome.tabs.create({ url: 'https://www.paypal.me/tkorakas/2' });
-    }
-
-    /**
-     * Redirect to bug form button.
-     */
-
-  }, {
-    key: 'openBugFormButton',
-    value: function openBugFormButton(e) {
-      chrome.tabs.create({ url: 'https://goo.gl/forms/cYNi93wGUe1hDsYt1' });
-    }
-
-    /**
-     * Change page.
-     *
-     * @param item
-     *  If page equals to recipients needs an item.
-     */
-
-  }, {
     key: 'changePage',
     value: function changePage() {
       var item = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
@@ -9699,16 +9677,7 @@ var App = function (_Component) {
       return _react2.default.createElement(
         'div',
         null,
-        this.renderPage(),
-        _react2.default.createElement(
-          'footer',
-          { className: 'donate-section' },
-          _react2.default.createElement(
-            'a',
-            { onClick: this.openBugFormButton, href: '' },
-            'Report a bug'
-          )
-        )
+        this.renderPage()
       );
     }
   }]);
@@ -9764,13 +9733,16 @@ var List = function (_Component) {
     var _this = _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, props));
 
     _this.state = {
-      items: []
+      items: [],
+      showUndoButton: false
     };
 
     _this.addItem = _this.addItem.bind(_this);
     _this.deleteItem = _this.deleteItem.bind(_this);
     _this.saveToChromeStorage = _this.saveToChromeStorage.bind(_this);
     _this.loadLists = _this.loadLists.bind(_this);
+    _this.undoDeletedIem = _this.undoDeletedIem.bind(_this);
+    _this.renderUndoButton = _this.renderUndoButton.bind(_this);
     return _this;
   }
 
@@ -9781,6 +9753,7 @@ var List = function (_Component) {
 
       this.loadLists();
       chrome.runtime.onMessage.addListener(function (request, sender) {
+        _this2.setState({ showUndoButton: false });
         _this2.loadLists();
       });
     }
@@ -9841,6 +9814,7 @@ var List = function (_Component) {
         queue.push(itemToDelete);
         chrome.storage.sync.set({ gmail_lists_delete_queue: queue }, function () {
           chrome.alarms.create('gmail_lists_delete_item', { when: Date.now() + 4000 });
+          _this4.setState({ showUndoButton: true, items: items });
         });
       });
 
@@ -9880,10 +9854,41 @@ var List = function (_Component) {
         });
       });
     }
+
+    /**
+     * Remove last item from delete queue.
+     */
+
+  }, {
+    key: 'undoDeletedIem',
+    value: function undoDeletedIem(e) {
+      var _this6 = this;
+
+      chrome.storage.sync.get('gmail_lists_delete_queue', function (data) {
+        var deleteQueue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
+        deleteQueue.pop();
+        chrome.storage.sync.set({ gmail_lists_delete_queue: deleteQueue }, function () {
+          _this6.setState({
+            showUndoButton: false
+          });
+          _this6.loadLists();
+        });
+      });
+    }
+  }, {
+    key: 'renderUndoButton',
+    value: function renderUndoButton() {
+      var undoElement = _react2.default.createElement(
+        'button',
+        { className: 'undo-button', onClick: this.undoDeletedIem },
+        'Undo'
+      );
+      return !this.state.showUndoButton ? null : undoElement;
+    }
   }, {
     key: 'render',
     value: function render() {
-      var _this6 = this;
+      var _this7 = this;
 
       var data = (0, _reactKeyIndex2.default)(this.state.items, 1);
       return _react2.default.createElement(
@@ -9893,13 +9898,13 @@ var List = function (_Component) {
           'span',
           { className: 'input-container' },
           _react2.default.createElement('input', { placeholder: 'Create new list', onKeyPress: this.addItem, type: 'text', ref: function ref(c) {
-              return _this6.text = c;
+              return _this7.text = c;
             } })
         ),
         _react2.default.createElement(
           'ul',
           { ref: function ref(c) {
-              return _this6.list = c;
+              return _this7.list = c;
             } },
           _react2.default.createElement(
             _reactTransitionGroup.CSSTransitionGroup,
@@ -9911,7 +9916,7 @@ var List = function (_Component) {
               return _react2.default.createElement(
                 'li',
                 { key: item._id, onClick: function onClick() {
-                    return _this6.props.changePage(item.value);
+                    return _this7.props.changePage(item.value);
                   } },
                 _react2.default.createElement(
                   'span',
@@ -9920,13 +9925,14 @@ var List = function (_Component) {
                 ),
                 _react2.default.createElement(
                   'a',
-                  { name: item.value, onClick: _this6.deleteItem, className: 'delete-button', href: '' },
+                  { name: item.value, onClick: _this7.deleteItem, className: 'delete-button', href: '' },
                   '\u2715'
                 )
               );
             })
           )
-        )
+        ),
+        this.renderUndoButton()
       );
     }
   }]);
