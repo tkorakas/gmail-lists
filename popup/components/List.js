@@ -20,6 +20,7 @@ export default class List extends Component {
   }
 
   componentDidMount() {
+    return;
     this.loadLists();
     chrome.runtime.onMessage.addListener((request, sender) => {
       this.setState({showUndoButton: false});
@@ -42,10 +43,11 @@ export default class List extends Component {
     if (e.key === 'Enter') {
       const trimmedValue = this.text.value.trim();
       // Check if list name already exists.
-      if (!this.state.items.includes(trimmedValue)) {
+      if (!this.state.items.includes(trimmedValue) && trimmedValue !== '') {
         // Add new item to array and save to chrome storage and update state.
         const items = [...this.state.items, trimmedValue];
-        this.saveToChromeStorage(items, true);
+        this.setState({items});
+        // this.saveToChromeStorage(items, true);
       }
 
       this.text.value = '';
@@ -61,7 +63,7 @@ export default class List extends Component {
     // Remove item from array and save to chrome storage and update state.
     const itemToDelete = e.target.name;
     const items = this.state.items.filter((item) => item !== e.target.name);
-    // const cleanedName = cleanSpecialCharactersAndRemoveSpaces(e.target.name);
+    // const cleanedName = tranformToKey(e.target.name);
     // const storageKey = `gmail_lists_${cleanedName}`;
 
     // Add item on queue for deletion.
