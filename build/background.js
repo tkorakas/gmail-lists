@@ -107,22 +107,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // Listen for elapsed alarms.
 chrome.alarms.onAlarm.addListener(function (alarm) {
   console.log('received ');
-  chrome.storage.sync.get(['gmail_lists_delete_queue', 'gmail_lists'], function (data) {
-    // Set items.
-    console.log(data);
-    var queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
-    var items = data['gmail_lists'] !== undefined ? data['gmail_lists'] : [];
-    var newItemsList = items.filter(function (item) {
-      return !queue.includes(item);
-    });
+  chrome.storage.sync.get({
+    keys: ['gmail_lists_delete_queue', 'gmail_lists'], callback: function (data) {
+      // Set items.
+      console.log(data);
+      var queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
+      var items = data['gmail_lists'] !== undefined ? data['gmail_lists'] : [];
+      var newItemsList = items.filter(function (item) {
+        return !queue.includes(item);
+      });
 
-    chrome.storage.sync.set({ gmail_lists: newItemsList }, function () {
-      chrome.runtime.sendMessage({ greeting: "hello" }, function () {});
+      chrome.storage.sync.set({gmail_lists: newItemsList}, function () {
+        chrome.runtime.sendMessage({greeting: "hello"}, function () {
+        });
 
-      chrome.storage.sync.set({ gmail_lists_delete_queue: [] });
-    });
+        chrome.storage.sync.set({gmail_lists_delete_queue: []});
+      });
 
-    // Delete email lists.
+      // Delete email lists.
+    }
   });
 });
 

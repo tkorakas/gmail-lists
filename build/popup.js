@@ -5030,7 +5030,7 @@ function formatUnexpectedArgument(arg) {
 }
 
 function getInternalInstanceReadyForUpdate(publicInstance, callerName) {
-  var internalInstance = ReactInstanceMap.get(publicInstance);
+  var internalInstance = ReactInstanceMap.get({keys: publicInstance});
   if (!internalInstance) {
     if (false) {
       var ctor = publicInstance.constructor;
@@ -5070,7 +5070,7 @@ var ReactUpdateQueue = {
         owner._warnedAboutRefsInRender = true;
       }
     }
-    var internalInstance = ReactInstanceMap.get(publicInstance);
+    var internalInstance = ReactInstanceMap.get({keys: publicInstance});
     if (internalInstance) {
       // During componentWillMount and render this will still be null but after
       // that will always render to something. At least for now. So we can use
@@ -7949,7 +7949,7 @@ var ReactMount = {
 
     var nextContext;
     if (parentComponent) {
-      var parentInst = ReactInstanceMap.get(parentComponent);
+      var parentInst = ReactInstanceMap.get({keys: parentComponent});
       nextContext = parentInst._processChildContext(parentInst._context);
     } else {
       nextContext = emptyObject;
@@ -9762,10 +9762,12 @@ var List = function (_Component) {
     value: function loadLists() {
       var _this3 = this;
 
-      chrome.storage.sync.get('gmail_lists', function (data) {
-        _this3.setState({
-          items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : []
-        });
+      chrome.storage.sync.get({
+        keys: 'gmail_lists', callback: function (data) {
+          _this3.setState({
+            items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : []
+          });
+        }
       });
     }
 
@@ -9809,13 +9811,15 @@ var List = function (_Component) {
       // const storageKey = `gmail_lists_${cleanedName}`;
 
       // Add item on queue for deletion.
-      chrome.storage.sync.get('gmail_lists_delete_queue', function (data) {
-        var queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
-        queue.push(itemToDelete);
-        chrome.storage.sync.set({ gmail_lists_delete_queue: queue }, function () {
-          chrome.alarms.create('gmail_lists_delete_item', { when: Date.now() + 4000 });
-          _this4.setState({ showUndoButton: true, items: items });
-        });
+      chrome.storage.sync.get({
+        keys: 'gmail_lists_delete_queue', callback: function (data) {
+          var queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
+          queue.push(itemToDelete);
+          chrome.storage.sync.set({gmail_lists_delete_queue: queue}, function () {
+            chrome.alarms.create('gmail_lists_delete_item', {when: Date.now() + 4000});
+            _this4.setState({showUndoButton: true, items: items});
+          });
+        }
       });
 
       // remove from background script.
@@ -9864,15 +9868,17 @@ var List = function (_Component) {
     value: function undoDeletedIem(e) {
       var _this6 = this;
 
-      chrome.storage.sync.get('gmail_lists_delete_queue', function (data) {
-        var deleteQueue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
-        deleteQueue.pop();
-        chrome.storage.sync.set({ gmail_lists_delete_queue: deleteQueue }, function () {
-          _this6.setState({
-            showUndoButton: false
+      chrome.storage.sync.get({
+        keys: 'gmail_lists_delete_queue', callback: function (data) {
+          var deleteQueue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
+          deleteQueue.pop();
+          chrome.storage.sync.set({gmail_lists_delete_queue: deleteQueue}, function () {
+            _this6.setState({
+              showUndoButton: false
+            });
+            _this6.loadLists();
           });
-          _this6.loadLists();
-        });
+        }
       });
     }
   }, {
@@ -10011,10 +10017,12 @@ var RecipientsList = function (_Component) {
     value: function loadLists() {
       var _this2 = this;
 
-      chrome.storage.sync.get(this.state.storageKey, function (data) {
-        _this2.setState({
-          items: data[_this2.state.storageKey] !== undefined ? data[_this2.state.storageKey] : []
-        });
+      chrome.storage.sync.get({
+        keys: this.state.storageKey, callback: function (data) {
+          _this2.setState({
+            items: data[_this2.state.storageKey] !== undefined ? data[_this2.state.storageKey] : []
+          });
+        }
       });
     }
 
@@ -13960,7 +13968,7 @@ var CompositeTypes = {
 
 function StatelessComponent(Component) {}
 StatelessComponent.prototype.render = function () {
-  var Component = ReactInstanceMap.get(this)._currentElement.type;
+  var Component = ReactInstanceMap.get({keys: this})._currentElement.type;
   var element = Component(this.props, this.context, this.updater);
   warnIfInvalidElement(Component, element);
   return element;
@@ -17849,7 +17857,7 @@ if (false) {
     if (!inst._debugID) {
       // Check for ART-like instances. TODO: This is silly/gross.
       var internal;
-      if (internal = ReactInstanceMap.get(inst)) {
+      if (internal = ReactInstanceMap.get({keys: inst})) {
         inst = internal;
       }
     }
@@ -20223,7 +20231,7 @@ function findDOMNode(componentOrElement) {
     return componentOrElement;
   }
 
-  var inst = ReactInstanceMap.get(componentOrElement);
+  var inst = ReactInstanceMap.get({keys: componentOrElement});
   if (inst) {
     inst = getHostComponentFromComposite(inst);
     return inst ? ReactDOMComponentTree.getNodeFromInstance(inst) : null;

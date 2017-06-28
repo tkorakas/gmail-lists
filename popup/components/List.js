@@ -29,10 +29,12 @@ export default class List extends Component {
   }
 
   loadLists() {
-    chrome.storage.sync.get('gmail_lists', (data) => {
-      this.setState({
-        items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : [],
-      })
+    chrome.storage.sync.get({
+      keys: 'gmail_lists', callback: (data) => {
+        this.setState({
+          items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : [],
+        })
+      }
     });
   }
 
@@ -47,7 +49,7 @@ export default class List extends Component {
         // Add new item to array and save to chrome storage and update state.
         const items = [...this.state.items, trimmedValue];
         this.setState({items});
-        // this.saveToChromeStorage(items, true);
+        this.saveToChromeStorage(items, true);
       }
 
       this.text.value = '';
@@ -67,13 +69,15 @@ export default class List extends Component {
     // const storageKey = `gmail_lists_${cleanedName}`;
 
     // Add item on queue for deletion.
-    chrome.storage.sync.get('gmail_lists_delete_queue', (data) => {
-      let queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
-      queue.push(itemToDelete);
-      chrome.storage.sync.set({gmail_lists_delete_queue: queue}, () => {
-        chrome.alarms.create('gmail_lists_delete_item', {when: Date.now() + 4000});
-        this.setState({showUndoButton: true, items});
-      });
+    chrome.storage.sync.get({
+      keys: 'gmail_lists_delete_queue', callback: (data) => {
+        let queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
+        queue.push(itemToDelete);
+        chrome.storage.sync.set({gmail_lists_delete_queue: queue}, () => {
+          chrome.alarms.create('gmail_lists_delete_item', {when: Date.now() + 4000});
+          this.setState({showUndoButton: true, items});
+        });
+      }
     });
 
     // remove from background script.
@@ -110,15 +114,17 @@ export default class List extends Component {
    * Remove last item from delete queue.
    */
   undoDeletedIem(e) {
-    chrome.storage.sync.get('gmail_lists_delete_queue', (data) => {
-      const deleteQueue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
-      deleteQueue.pop();
-      chrome.storage.sync.set({gmail_lists_delete_queue: deleteQueue}, () => {
-        this.setState({
-          showUndoButton: false,
+    chrome.storage.sync.get({
+      keys: 'gmail_lists_delete_queue', callback: (data) => {
+        const deleteQueue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
+        deleteQueue.pop();
+        chrome.storage.sync.set({gmail_lists_delete_queue: deleteQueue}, () => {
+          this.setState({
+            showUndoButton: false,
+          });
+          this.loadLists();
         });
-        this.loadLists();
-      });
+      }
     });
   }
 

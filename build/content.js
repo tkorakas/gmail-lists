@@ -212,7 +212,7 @@ module.exports = warning;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -596,7 +596,7 @@ module.exports = ExecutionEnvironment;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 function makeEmptyFunction(arg) {
@@ -638,7 +638,7 @@ module.exports = emptyFunction;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -1196,7 +1196,7 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -1232,7 +1232,7 @@ module.exports = ReactCurrentOwner;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -2315,7 +2315,7 @@ module.exports = ReactElement;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -3333,7 +3333,7 @@ module.exports = SyntheticMouseEvent;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -3795,7 +3795,7 @@ module.exports = setInnerHTML;
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @typechecks
- * 
+ *
  */
 
 /*eslint-disable no-self-compare */
@@ -4122,7 +4122,7 @@ module.exports = DOMNamespaces;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -4613,7 +4613,7 @@ module.exports = EventPluginUtils;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -4820,7 +4820,7 @@ module.exports = LinkedValueUtils;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -4871,7 +4871,7 @@ module.exports = ReactComponentEnvironment;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -4984,7 +4984,7 @@ function formatUnexpectedArgument(arg) {
 }
 
 function getInternalInstanceReadyForUpdate(publicInstance, callerName) {
-  var internalInstance = ReactInstanceMap.get(publicInstance);
+  var internalInstance = ReactInstanceMap.get({keys: publicInstance});
   if (!internalInstance) {
     if (false) {
       var ctor = publicInstance.constructor;
@@ -5024,7 +5024,7 @@ var ReactUpdateQueue = {
         owner._warnedAboutRefsInRender = true;
       }
     }
-    var internalInstance = ReactInstanceMap.get(publicInstance);
+    var internalInstance = ReactInstanceMap.get({keys: publicInstance});
     if (internalInstance) {
       // During componentWillMount and render this will still be null but after
       // that will always render to something. At least for now. So we can use
@@ -6637,7 +6637,7 @@ module.exports = CSSProperty;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -7266,7 +7266,7 @@ module.exports = ReactEmptyComponent;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -7844,7 +7844,7 @@ var ReactMount = {
 
     var nextContext;
     if (parentComponent) {
-      var parentInst = ReactInstanceMap.get(parentComponent);
+      var parentInst = ReactInstanceMap.get({keys: parentComponent});
       nextContext = parentInst._processChildContext(parentInst._context);
     } else {
       nextContext = emptyObject;
@@ -8038,7 +8038,7 @@ module.exports = ReactMount;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -8115,7 +8115,7 @@ module.exports = ViewportMetrics;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -8178,7 +8178,7 @@ module.exports = accumulateInto;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -8421,7 +8421,7 @@ module.exports = instantiateReactComponent;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -8715,7 +8715,7 @@ module.exports = traverseAllChildren;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -9054,7 +9054,7 @@ module.exports = ReactComponentTreeHook;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -9079,7 +9079,7 @@ module.exports = REACT_ELEMENT_TYPE;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -9163,10 +9163,12 @@ var Lists = function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      chrome.storage.sync.get('gmail_lists', function (data) {
-        _this2.setState({
-          items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : []
-        });
+      chrome.storage.sync.get({
+        keys: 'gmail_lists', callback: function (data) {
+          _this2.setState({
+            items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : []
+          });
+        }
       });
     }
   }, {
@@ -9176,9 +9178,11 @@ var Lists = function (_Component) {
 
       e.preventDefault();
       var name = (0, _StringHelpers2.default)(e.target.name);
-      chrome.storage.sync.get('gmail_lists_' + name, function (data) {
-        var emails = data['gmail_lists_' + name];
-        _this3.props.event.composeView.setToRecipients(emails !== undefined ? emails : []);
+      chrome.storage.sync.get({
+        keys: 'gmail_lists_' + name, callback: function (data) {
+          var emails = data['gmail_lists_' + name];
+          _this3.props.event.composeView.setToRecipients(emails !== undefined ? emails : []);
+        }
       });
     }
   }, {
@@ -9384,7 +9388,7 @@ module.exports = camelizeStyleName;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 var isTextNode = __webpack_require__(91);
@@ -9934,7 +9938,7 @@ module.exports = isTextNode;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  * @typechecks static-only
  */
 
@@ -12783,7 +12787,7 @@ var CompositeTypes = {
 
 function StatelessComponent(Component) {}
 StatelessComponent.prototype.render = function () {
-  var Component = ReactInstanceMap.get(this)._currentElement.type;
+  var Component = ReactInstanceMap.get({keys: this})._currentElement.type;
   var element = Component(this.props, this.context, this.updater);
   warnIfInvalidElement(Component, element);
   return element;
@@ -16218,7 +16222,7 @@ module.exports = {
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -16672,7 +16676,7 @@ if (false) {
     if (!inst._debugID) {
       // Check for ART-like instances. TODO: This is silly/gross.
       var internal;
-      if (internal = ReactInstanceMap.get(inst)) {
+      if (internal = ReactInstanceMap.get({keys: inst})) {
         inst = internal;
       }
     }
@@ -16990,7 +16994,7 @@ module.exports = ReactMultiChild;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -17089,7 +17093,7 @@ module.exports = ReactOwner;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -17294,7 +17298,7 @@ module.exports = ReactReconcileTransaction;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -17483,7 +17487,7 @@ module.exports = ReactServerRenderingTransaction;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -18149,7 +18153,7 @@ module.exports = SelectEventPlugin;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -18876,7 +18880,7 @@ module.exports = SyntheticWheelEvent;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -19046,7 +19050,7 @@ function findDOMNode(componentOrElement) {
     return componentOrElement;
   }
 
-  var inst = ReactInstanceMap.get(componentOrElement);
+  var inst = ReactInstanceMap.get({keys: componentOrElement});
   if (inst) {
     inst = getHostComponentFromComposite(inst);
     return inst ? ReactDOMComponentTree.getNodeFromInstance(inst) : null;
@@ -19074,7 +19078,7 @@ module.exports = findDOMNode;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -19263,7 +19267,7 @@ module.exports = getEventKey;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -19558,7 +19562,7 @@ module.exports = (arr, label) => {
 				i++;
 			});
 			return arr;
-		} 
+		}
 		obj = {
 			value: arr,
 			_id: hashids.encode(digits)
@@ -19582,7 +19586,7 @@ module.exports = (arr, label) => {
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -19646,7 +19650,7 @@ module.exports = KeyEscapeUtils;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -20862,7 +20866,7 @@ module.exports = ReactDOMFactories;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -20982,7 +20986,7 @@ module.exports = '15.5.4';
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 
@@ -21028,7 +21032,7 @@ module.exports = getIteratorFn;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * 
+ *
  */
 
 

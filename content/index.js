@@ -14,19 +14,23 @@ export default class Lists extends Component {
   }
 
   componentDidMount() {
-    chrome.storage.sync.get('gmail_lists', (data) => {
-      this.setState({
-        items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : [],
-      })
+    chrome.storage.sync.get({
+      keys: 'gmail_lists', callback: (data) => {
+        this.setState({
+          items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : [],
+        })
+      }
     });
   }
 
   fillRecipients(e) {
     e.preventDefault();
     const name = cleanSpecialCharactersAndRemoveSpaces(e.target.name);
-    chrome.storage.sync.get(`gmail_lists_${name}`, (data) => {
-      const emails = data[`gmail_lists_${name}`];
-      this.props.event.composeView.setToRecipients(emails !== undefined ? emails : []);
+    chrome.storage.sync.get({
+      keys: `gmail_lists_${name}`, callback: (data) => {
+        const emails = data[`gmail_lists_${name}`];
+        this.props.event.composeView.setToRecipients(emails !== undefined ? emails : []);
+      }
     });
   }
 
