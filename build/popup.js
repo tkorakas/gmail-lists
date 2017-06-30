@@ -212,7 +212,7 @@ module.exports = warning;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -596,7 +596,7 @@ module.exports = ExecutionEnvironment;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 function makeEmptyFunction(arg) {
@@ -638,7 +638,7 @@ module.exports = emptyFunction;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -1206,7 +1206,7 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -1242,7 +1242,7 @@ module.exports = ReactCurrentOwner;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -2325,7 +2325,7 @@ module.exports = ReactElement;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -3379,7 +3379,7 @@ module.exports = SyntheticMouseEvent;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -3841,7 +3841,7 @@ module.exports = setInnerHTML;
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @typechecks
- *
+ * 
  */
 
 /*eslint-disable no-self-compare */
@@ -4168,7 +4168,7 @@ module.exports = DOMNamespaces;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -4659,7 +4659,7 @@ module.exports = EventPluginUtils;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -4866,7 +4866,7 @@ module.exports = LinkedValueUtils;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -4917,7 +4917,7 @@ module.exports = ReactComponentEnvironment;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -5030,7 +5030,7 @@ function formatUnexpectedArgument(arg) {
 }
 
 function getInternalInstanceReadyForUpdate(publicInstance, callerName) {
-  var internalInstance = ReactInstanceMap.get({keys: publicInstance});
+  var internalInstance = ReactInstanceMap.get(publicInstance);
   if (!internalInstance) {
     if (false) {
       var ctor = publicInstance.constructor;
@@ -5070,7 +5070,7 @@ var ReactUpdateQueue = {
         owner._warnedAboutRefsInRender = true;
       }
     }
-    var internalInstance = ReactInstanceMap.get({keys: publicInstance});
+    var internalInstance = ReactInstanceMap.get(publicInstance);
     if (internalInstance) {
       // During componentWillMount and render this will still be null but after
       // that will always render to something. At least for now. So we can use
@@ -6144,7 +6144,7 @@ module.exports = __webpack_require__(124);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = cleanSpecialCharactersAndRemoveSpaces;
+exports.default = transformToKey;
 /**
  * Replace special characters and remove spaces from remove spaces.
  *
@@ -6154,9 +6154,9 @@ exports.default = cleanSpecialCharactersAndRemoveSpaces;
  * @returns string
  *  Normalized string.
  */
-function cleanSpecialCharactersAndRemoveSpaces(string) {
+function transformToKey(string) {
   string = string.replace(/ /g, '');
-  return string.replace(/[^a-zA-Z1-9]/g, '_');
+  return string.replace(/[^a-zA-Z1-9]/g, '').toLowerCase();
 }
 
 /***/ }),
@@ -6742,7 +6742,7 @@ module.exports = CSSProperty;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -7371,7 +7371,7 @@ module.exports = ReactEmptyComponent;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -7949,7 +7949,7 @@ var ReactMount = {
 
     var nextContext;
     if (parentComponent) {
-      var parentInst = ReactInstanceMap.get({keys: parentComponent});
+      var parentInst = ReactInstanceMap.get(parentComponent);
       nextContext = parentInst._processChildContext(parentInst._context);
     } else {
       nextContext = emptyObject;
@@ -8143,7 +8143,7 @@ module.exports = ReactMount;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -8220,7 +8220,7 @@ module.exports = ViewportMetrics;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -8283,7 +8283,7 @@ module.exports = accumulateInto;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -8526,7 +8526,7 @@ module.exports = instantiateReactComponent;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -8832,7 +8832,7 @@ module.exports = (arr, label) => {
 				i++;
 			});
 			return arr;
-		}
+		} 
 		obj = {
 			value: arr,
 			_id: hashids.encode(digits)
@@ -9208,7 +9208,7 @@ var nameShape = exports.nameShape = _propTypes2.default.oneOfType([_propTypes2.d
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -9547,7 +9547,7 @@ module.exports = ReactComponentTreeHook;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -9572,7 +9572,7 @@ module.exports = REACT_ELEMENT_TYPE;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -9743,31 +9743,41 @@ var List = function (_Component) {
     _this.loadLists = _this.loadLists.bind(_this);
     _this.undoDeletedIem = _this.undoDeletedIem.bind(_this);
     _this.renderUndoButton = _this.renderUndoButton.bind(_this);
+    _this.onMessage = _this.onMessage.bind(_this);
     return _this;
   }
 
   _createClass(List, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this2 = this;
-
       this.loadLists();
-      chrome.runtime.onMessage.addListener(function (request, sender) {
-        _this2.setState({ showUndoButton: false });
-        _this2.loadLists();
-      });
+      chrome.runtime.onMessage.addListener(this.onMessage());
     }
+
+    /**
+     * Disable undo button and reload lists.
+     */
+
+  }, {
+    key: 'onMessage',
+    value: function onMessage(request, sender) {
+      this.setState({ showUndoButton: false });
+      this.loadLists();
+    }
+
+    /**
+     * Load all lists.
+     */
+
   }, {
     key: 'loadLists',
     value: function loadLists() {
-      var _this3 = this;
+      var _this2 = this;
 
-      chrome.storage.sync.get({
-        keys: 'gmail_lists', callback: function (data) {
-          _this3.setState({
-            items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : []
-          });
-        }
+      chrome.storage.sync.get('gmail_lists', function (data) {
+        _this2.setState({
+          items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : []
+        });
       });
     }
 
@@ -9781,7 +9791,7 @@ var List = function (_Component) {
       if (e.key === 'Enter') {
         var trimmedValue = this.text.value.trim();
         // Check if list name already exists.
-        if (!this.state.items.includes(trimmedValue)) {
+        if (!this.state.items.includes(trimmedValue) && trimmedValue !== '') {
           // Add new item to array and save to chrome storage and update state.
           var items = [].concat(_toConsumableArray(this.state.items), [trimmedValue]);
           this.saveToChromeStorage(items, true);
@@ -9798,7 +9808,7 @@ var List = function (_Component) {
   }, {
     key: 'deleteItem',
     value: function deleteItem(e) {
-      var _this4 = this;
+      var _this3 = this;
 
       e.preventDefault();
       e.stopPropagation();
@@ -9807,25 +9817,15 @@ var List = function (_Component) {
       var items = this.state.items.filter(function (item) {
         return item !== e.target.name;
       });
-      // const cleanedName = tranformToKey(e.target.name);
-      // const storageKey = `gmail_lists_${cleanedName}`;
 
       // Add item on queue for deletion.
-      chrome.storage.sync.get({
-        keys: 'gmail_lists_delete_queue', callback: function (data) {
-          var queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
-          queue.push(itemToDelete);
-          chrome.storage.sync.set({gmail_lists_delete_queue: queue}, function () {
-            chrome.alarms.create('gmail_lists_delete_item', {when: Date.now() + 4000});
-            _this4.setState({showUndoButton: true, items: items});
-          });
-        }
-      });
-
-      // remove from background script.
-      return;
-      chrome.storage.sync.remove(storageKey, function () {
-        _this4.saveToChromeStorage(items);
+      chrome.storage.sync.get('gmail_lists_delete_queue', function (data) {
+        var queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
+        queue.push(itemToDelete);
+        chrome.storage.sync.set({ gmail_lists_delete_queue: queue }, function () {
+          chrome.alarms.create('gmail_lists_delete_item', { when: Date.now() + 4000 });
+          _this3.setState({ showUndoButton: true, items: items });
+        });
       });
     }
 
@@ -9841,19 +9841,19 @@ var List = function (_Component) {
   }, {
     key: 'saveToChromeStorage',
     value: function saveToChromeStorage(items) {
-      var _this5 = this;
+      var _this4 = this;
 
       var isNewItem = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
       var objectToSave = {};
       objectToSave['gmail_lists'] = items;
       chrome.storage.sync.set(objectToSave, function () {
-        _this5.setState({
+        _this4.setState({
           items: items
         }, function () {
           if (isNewItem) {
             // Scroll to last item.
-            _this5.list.scrollTop += 30 * _this5.state.items.length;
+            _this4.list.scrollTop += 30 * _this4.state.items.length;
           }
         });
       });
@@ -9866,21 +9866,24 @@ var List = function (_Component) {
   }, {
     key: 'undoDeletedIem',
     value: function undoDeletedIem(e) {
-      var _this6 = this;
+      var _this5 = this;
 
-      chrome.storage.sync.get({
-        keys: 'gmail_lists_delete_queue', callback: function (data) {
-          var deleteQueue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
-          deleteQueue.pop();
-          chrome.storage.sync.set({gmail_lists_delete_queue: deleteQueue}, function () {
-            _this6.setState({
-              showUndoButton: false
-            });
-            _this6.loadLists();
+      chrome.storage.sync.get('gmail_lists_delete_queue', function (data) {
+        var deleteQueue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
+        deleteQueue.pop();
+        chrome.storage.sync.set({ gmail_lists_delete_queue: deleteQueue }, function () {
+          _this5.setState({
+            showUndoButton: false
           });
-        }
+          _this5.loadLists();
+        });
       });
     }
+
+    /**
+     * Render undo button element.
+     */
+
   }, {
     key: 'renderUndoButton',
     value: function renderUndoButton() {
@@ -9894,7 +9897,7 @@ var List = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this7 = this;
+      var _this6 = this;
 
       var data = (0, _reactKeyIndex2.default)(this.state.items, 1);
       return _react2.default.createElement(
@@ -9904,13 +9907,13 @@ var List = function (_Component) {
           'span',
           { className: 'input-container' },
           _react2.default.createElement('input', { placeholder: 'Create new list', onKeyPress: this.addItem, type: 'text', ref: function ref(c) {
-              return _this7.text = c;
+              return _this6.text = c;
             } })
         ),
         _react2.default.createElement(
           'ul',
           { ref: function ref(c) {
-              return _this7.list = c;
+              return _this6.list = c;
             } },
           _react2.default.createElement(
             _reactTransitionGroup.CSSTransitionGroup,
@@ -9922,7 +9925,7 @@ var List = function (_Component) {
               return _react2.default.createElement(
                 'li',
                 { key: item._id, onClick: function onClick() {
-                    return _this7.props.changePage(item.value);
+                    return _this6.props.changePage(item.value);
                   } },
                 _react2.default.createElement(
                   'span',
@@ -9931,7 +9934,7 @@ var List = function (_Component) {
                 ),
                 _react2.default.createElement(
                   'a',
-                  { name: item.value, onClick: _this7.deleteItem, className: 'delete-button', href: '' },
+                  { name: item.value, onClick: _this6.deleteItem, className: 'delete-button', href: '' },
                   '\u2715'
                 )
               );
@@ -10017,12 +10020,10 @@ var RecipientsList = function (_Component) {
     value: function loadLists() {
       var _this2 = this;
 
-      chrome.storage.sync.get({
-        keys: this.state.storageKey, callback: function (data) {
-          _this2.setState({
-            items: data[_this2.state.storageKey] !== undefined ? data[_this2.state.storageKey] : []
-          });
-        }
+      chrome.storage.sync.get(this.state.storageKey, function (data) {
+        _this2.setState({
+          items: data[_this2.state.storageKey] !== undefined ? data[_this2.state.storageKey] : []
+        });
       });
     }
 
@@ -10524,7 +10525,7 @@ module.exports = camelizeStyleName;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 var isTextNode = __webpack_require__(105);
@@ -11074,7 +11075,7 @@ module.exports = isTextNode;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  * @typechecks static-only
  */
 
@@ -13968,7 +13969,7 @@ var CompositeTypes = {
 
 function StatelessComponent(Component) {}
 StatelessComponent.prototype.render = function () {
-  var Component = ReactInstanceMap.get({keys: this})._currentElement.type;
+  var Component = ReactInstanceMap.get(this)._currentElement.type;
   var element = Component(this.props, this.context, this.updater);
   warnIfInvalidElement(Component, element);
   return element;
@@ -17403,7 +17404,7 @@ module.exports = {
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -17857,7 +17858,7 @@ if (false) {
     if (!inst._debugID) {
       // Check for ART-like instances. TODO: This is silly/gross.
       var internal;
-      if (internal = ReactInstanceMap.get({keys: inst})) {
+      if (internal = ReactInstanceMap.get(inst)) {
         inst = internal;
       }
     }
@@ -18175,7 +18176,7 @@ module.exports = ReactMultiChild;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -18274,7 +18275,7 @@ module.exports = ReactOwner;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -18479,7 +18480,7 @@ module.exports = ReactReconcileTransaction;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -18668,7 +18669,7 @@ module.exports = ReactServerRenderingTransaction;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -19334,7 +19335,7 @@ module.exports = SelectEventPlugin;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -20061,7 +20062,7 @@ module.exports = SyntheticWheelEvent;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -20231,7 +20232,7 @@ function findDOMNode(componentOrElement) {
     return componentOrElement;
   }
 
-  var inst = ReactInstanceMap.get({keys: componentOrElement});
+  var inst = ReactInstanceMap.get(componentOrElement);
   if (inst) {
     inst = getHostComponentFromComposite(inst);
     return inst ? ReactDOMComponentTree.getNodeFromInstance(inst) : null;
@@ -20259,7 +20260,7 @@ module.exports = findDOMNode;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -20448,7 +20449,7 @@ module.exports = getEventKey;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -21163,7 +21164,7 @@ function mergeChildMappings(prev, next) {
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -21227,7 +21228,7 @@ module.exports = KeyEscapeUtils;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -22443,7 +22444,7 @@ module.exports = ReactDOMFactories;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -22563,7 +22564,7 @@ module.exports = '15.5.4';
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 
@@ -22609,7 +22610,7 @@ module.exports = getIteratorFn;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- *
+ * 
  */
 
 

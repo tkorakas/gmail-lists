@@ -4,7 +4,7 @@
   "description": "Create mail lists to reuse fast on your emails.",
   "main": "script.js",
   "scripts": {
-    "test": "jest --notify"
+    "test": "jest"
   },
   "keywords": [
     "gmail",

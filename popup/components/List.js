@@ -17,24 +17,30 @@ export default class List extends Component {
     this.loadLists = this.loadLists.bind(this);
     this.undoDeletedIem = this.undoDeletedIem.bind(this);
     this.renderUndoButton = this.renderUndoButton.bind(this);
+    this.onMessage = this.onMessage.bind(this);
   }
 
   componentDidMount() {
-    return;
     this.loadLists();
-    chrome.runtime.onMessage.addListener((request, sender) => {
-      this.setState({showUndoButton: false});
-      this.loadLists();
-    });
+    chrome.runtime.onMessage.addListener(this.onMessage());
   }
 
+  /**
+   * Disable undo button and reload lists.
+   */
+  onMessage(request, sender) {
+    this.setState({showUndoButton: false});
+    this.loadLists();
+  }
+
+  /**
+   * Load all lists.
+   */
   loadLists() {
-    chrome.storage.sync.get({
-      keys: 'gmail_lists', callback: (data) => {
-        this.setState({
-          items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : [],
-        })
-      }
+    chrome.storage.sync.get('gmail_lists', (data) => {
+      this.setState({
+        items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : [],
+      });
     });
   }
 
@@ -48,7 +54,6 @@ export default class List extends Component {
       if (!this.state.items.includes(trimmedValue) && trimmedValue !== '') {
         // Add new item to array and save to chrome storage and update state.
         const items = [...this.state.items, trimmedValue];
-        this.setState({items});
         this.saveToChromeStorage(items, true);
       }
 
@@ -65,25 +70,15 @@ export default class List extends Component {
     // Remove item from array and save to chrome storage and update state.
     const itemToDelete = e.target.name;
     const items = this.state.items.filter((item) => item !== e.target.name);
-    // const cleanedName = tranformToKey(e.target.name);
-    // const storageKey = `gmail_lists_${cleanedName}`;
 
     // Add item on queue for deletion.
-    chrome.storage.sync.get({
-      keys: 'gmail_lists_delete_queue', callback: (data) => {
-        let queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
-        queue.push(itemToDelete);
-        chrome.storage.sync.set({gmail_lists_delete_queue: queue}, () => {
-          chrome.alarms.create('gmail_lists_delete_item', {when: Date.now() + 4000});
-          this.setState({showUndoButton: true, items});
-        });
-      }
-    });
-
-    // remove from background script.
-    return;
-    chrome.storage.sync.remove(storageKey, () => {
-      this.saveToChromeStorage(items);
+    chrome.storage.sync.get('gmail_lists_delete_queue', (data) => {
+      let queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
+      queue.push(itemToDelete);
+      chrome.storage.sync.set({gmail_lists_delete_queue: queue}, () => {
+        chrome.alarms.create('gmail_lists_delete_item', { when: Date.now() + 4000 });
+        this.setState({showUndoButton: true, items});
+      });
     });
   }
 
@@ -114,20 +109,21 @@ export default class List extends Component {
    * Remove last item from delete queue.
    */
   undoDeletedIem(e) {
-    chrome.storage.sync.get({
-      keys: 'gmail_lists_delete_queue', callback: (data) => {
-        const deleteQueue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
-        deleteQueue.pop();
-        chrome.storage.sync.set({gmail_lists_delete_queue: deleteQueue}, () => {
-          this.setState({
-            showUndoButton: false,
-          });
-          this.loadLists();
+    chrome.storage.sync.get('gmail_lists_delete_queue', (data) => {
+      const deleteQueue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
+      deleteQueue.pop();
+      chrome.storage.sync.set({gmail_lists_delete_queue: deleteQueue}, () => {
+        this.setState({
+          showUndoButton: false,
         });
-      }
+        this.loadLists();
+      });
     });
   }
 
+  /**
+   * Render undo button element.
+   */
   renderUndoButton() {
     const undoElement = <button className="undo-button" onClick={this.undoDeletedIem}>Undo</button>;
     return !this.state.showUndoButton ? null : undoElement;

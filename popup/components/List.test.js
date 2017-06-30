@@ -1,25 +1,106 @@
 import React from 'react';
-import {mount} from 'enzyme';
+import { mount } from 'enzyme';
 import List from './List';
-import chrome from '../../helpers/ChromeStorageMock';
+import chrome from '../../utils/ChromeMock';
+import deleteFunctionality from '../../utils/BackgroundMock';
 
-test('insert new value to list', () => {
-  window.chrome = chrome;
-  // chrome.storage.sync.set({key: 'v', key2: 'v2'}, () => {console.log('done')});
-  // chrome.storage.sync.get(['key', 'key2'], (d) => {
-  //     console.log(d);
-  // });
-  // return;
-  const list = mount(
-    <List changePage={jest.fn()} />
-  );
+describe('List component', () => {
+  beforeEach(() => {
+   window.chrome = chrome;
+  });
 
-  const input = list.find('input');
-  input.getDOMNode().value = 'List 1';
-  input.simulate('change', input);
-  input.simulate('keypress', {key: 'Enter'});
-  expect(list.state().items.length).toBe(1);
-  expect(list.state().items[0]).toBe('List 1');
-  expect(input.getDOMNode().value).toBe('');
-  chrome.storage.sync.get((data) => console.log(data));
+  test('insert new value to list', () => {
+    const list = mount(
+      <List changePage={jest.fn()} />
+    );
+
+    // Find input field.
+    const input = list.find('input');
+    // Type on field and enter value.
+    input.getDOMNode().value = 'List 1';
+    input.simulate('change', input);
+    input.simulate('keypress', {key: 'Enter'});
+
+    // There is one item on the list.
+    expect(list.state().items.length).toBe(1);
+    expect(list.state().items[0]).toBe('List 1');
+
+    // Input field has no value.
+    expect(input.getDOMNode().value).toBe('');
+
+    // Item saved on storage.
+    chrome.storage.sync.get((data) => {
+      expect(data).toEqual({gmail_lists: ["List 1"]});
+    });
+  });
+
+  test('insert empty to list', () => {
+    const list = mount(
+      <List changePage={jest.fn()} />
+    );
+
+    // Find input field.
+    const input = list.find('input');
+    // Type on field and enter value.
+    input.getDOMNode().value = '';
+    input.simulate('change', input);
+    input.simulate('keypress', {key: 'Enter'});
+
+    // There is one item on the list.
+    expect(list.state().items.length).toBe(1);
+
+    // Item saved on storage.
+    chrome.storage.sync.get((data) => {
+      expect(data).toEqual({gmail_lists: ["List 1"]});
+    });
+
+    input.getDOMNode().value = ' ';
+    input.simulate('change', input);
+    input.simulate('keypress', {key: 'Enter'});
+
+    // There is one item on the list.
+    expect(list.state().items.length).toBe(1);
+
+    // Item saved on storage.
+    chrome.storage.sync.get((data) => {
+      expect(data).toEqual({gmail_lists: ["List 1"]});
+    });
+  });
+
+  test('load lists', () => {
+    chrome.storage.sync.get((data) => {
+      expect(data).toEqual({gmail_lists: ["List 1"]})
+    });
+
+    const list = mount(
+      <List changePage={jest.fn()} />
+    );
+
+    expect(list.find('li').length).toBe(1);
+  });
+
+  test('delete value from list', () =>{
+    let list = mount(
+      <List changePage={jest.fn()} />
+    );
+
+    // Click delete button.
+    const deleteButton = list.find('.delete-button').first();
+    deleteButton.simulate('click', {targe: {name: 'List 1'}});
+
+    // Simulate background script.
+    deleteFunctionality();
+    // Item saved on storage.
+    chrome.storage.sync.get('gmail_lists', (data) => {
+      expect(data).toEqual({gmail_lists: []});
+    });
+    expect(list.state().items.length).toBe(0);
+
+    list = mount(
+      <List changePage={jest.fn()} />
+    );
+    expect(list.find('li').length).toBe(0);
+  });
+
+  test('undo deleted value', () =>{});
 });

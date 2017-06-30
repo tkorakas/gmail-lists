@@ -24,12 +24,10 @@ export default class RecipientsList extends Component {
   }
 
   loadLists() {
-    chrome.storage.sync.get({
-      keys: this.state.storageKey, callback: (data) => {
-        this.setState({
-          items: data[this.state.storageKey] !== undefined ? data[this.state.storageKey] : [],
-        })
-      }
+    chrome.storage.sync.get(this.state.storageKey, (data) => {
+      this.setState({
+        items: data[this.state.storageKey] !== undefined ? data[this.state.storageKey] : [],
+      })
     });
   }
 
