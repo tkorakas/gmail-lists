@@ -30,15 +30,30 @@ const chrome = {
           parameters[1]();
         }
       },
-      remove: (key, calback) => {
-        if (typeof data[key] !== 'undefined') {
-          delete  data[key];
-          calback();
+      remove: (...parameters) => {
+        if (typeof parameters[0] === 'string') {
+          if (typeof data[parameters[0]] !== 'undefined') {
+            delete  data[parameters[0]];
+          }
         }
-        throw new Error;
+        else {
+          parameters[0].forEach((key) => {
+            if (typeof data[key] !== 'undefined') {
+              delete  data[key];
+            }
+          });
+        }
+
+        // Run callback function if exists.
+        if (parameters.length > 1) {
+          parameters[1]();
+        }
       },
-      clear: () => {
+      clear: (callback = null) => {
         data = {};
+        if (callback !== null) {
+          callback();
+        }
       }
     }
   },
@@ -49,7 +64,8 @@ const chrome = {
     }
   },
   alarms: {
-    create: () => {},
+    create: () => {
+    },
   }
 };
 

@@ -79,6 +79,32 @@ describe('List component', () => {
     expect(list.find('li').length).toBe(1);
   });
 
+  test('undo deleted value', () =>{
+    let list = mount(
+      <List changePage={jest.fn()} />
+    );
+
+    // Click delete button.
+    const deleteButton = list.find('.delete-button').first();
+    deleteButton.simulate('click', {targe: {name: 'List 1'}});
+
+    // Simulate background script.
+    const undoButton = list.find('.undo-button').first();
+    undoButton.simulate('click');
+    deleteFunctionality();
+
+    // Item saved on storage.
+    chrome.storage.sync.get('gmail_lists', (data) => {
+      expect(data).toEqual({gmail_lists: ['List 1']});
+    });
+    expect(list.state().items.length).toBe(1);
+
+    list = mount(
+      <List changePage={jest.fn()} />
+    );
+    expect(list.find('li').length).toBe(1);
+  });
+
   test('delete value from list', () =>{
     let list = mount(
       <List changePage={jest.fn()} />
@@ -101,6 +127,4 @@ describe('List component', () => {
     );
     expect(list.find('li').length).toBe(0);
   });
-
-  test('undo deleted value', () =>{});
 });

@@ -9751,7 +9751,7 @@ var List = function (_Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.loadLists();
-      chrome.runtime.onMessage.addListener(this.onMessage());
+      chrome.runtime.onMessage.addListener(this.onMessage);
     }
 
     /**
@@ -9762,7 +9762,6 @@ var List = function (_Component) {
     key: 'onMessage',
     value: function onMessage(request, sender) {
       this.setState({ showUndoButton: false });
-      this.loadLists();
     }
 
     /**
@@ -9870,12 +9869,12 @@ var List = function (_Component) {
 
       chrome.storage.sync.get('gmail_lists_delete_queue', function (data) {
         var deleteQueue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
-        deleteQueue.pop();
+        var item = deleteQueue.pop();
         chrome.storage.sync.set({ gmail_lists_delete_queue: deleteQueue }, function () {
           _this5.setState({
-            showUndoButton: false
+            showUndoButton: false,
+            items: [].concat(_toConsumableArray(_this5.state.items), [item])
           });
-          _this5.loadLists();
         });
       });
     }

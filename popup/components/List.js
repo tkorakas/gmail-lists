@@ -22,7 +22,7 @@ export default class List extends Component {
 
   componentDidMount() {
     this.loadLists();
-    chrome.runtime.onMessage.addListener(this.onMessage());
+    chrome.runtime.onMessage.addListener(this.onMessage);
   }
 
   /**
@@ -30,7 +30,6 @@ export default class List extends Component {
    */
   onMessage(request, sender) {
     this.setState({showUndoButton: false});
-    this.loadLists();
   }
 
   /**
@@ -111,12 +110,12 @@ export default class List extends Component {
   undoDeletedIem(e) {
     chrome.storage.sync.get('gmail_lists_delete_queue', (data) => {
       const deleteQueue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
-      deleteQueue.pop();
+      const item = deleteQueue.pop();
       chrome.storage.sync.set({gmail_lists_delete_queue: deleteQueue}, () => {
         this.setState({
           showUndoButton: false,
+          items: [...this.state.items, item]
         });
-        this.loadLists();
       });
     });
   }

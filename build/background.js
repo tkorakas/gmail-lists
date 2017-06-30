@@ -121,11 +121,11 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
     });
 
     // Delete email lists.
-    var cleanedName = (0, _StringHelpers2.default)(e.target.name);
-    var storageKey = 'gmail_lists_' + cleanedName;
-    chrome.storage.sync.remove(storageKey, function () {
-      undefined.saveToChromeStorage(items);
-    });
+    // const cleanedName = transformToKey(e.target.name);
+    // const storageKey = `gmail_lists_${cleanedName}`;
+    // chrome.storage.sync.remove(storageKey, () => {
+    //   this.saveToChromeStorage(items);
+    // });
   });
 });
 
