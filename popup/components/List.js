@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import keyIndex from 'react-key-index';
 import {CSSTransitionGroup} from 'react-transition-group';
-import cleanSpecialCharactersAndRemoveSpaces from '../../utils/StringHelpers';
 
 export default class List extends Component {
   constructor(props) {

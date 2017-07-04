@@ -106,9 +106,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Listen for elapsed alarms.
 chrome.alarms.onAlarm.addListener(function (alarm) {
+  var queue = [];
   chrome.storage.sync.get(['gmail_lists_delete_queue', 'gmail_lists'], function (data) {
     // Set items.
-    var queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
+    queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
     var items = data['gmail_lists'] !== undefined ? data['gmail_lists'] : [];
     var newItemsList = items.filter(function (item) {
       return !queue.includes(item);
@@ -121,11 +122,12 @@ chrome.alarms.onAlarm.addListener(function (alarm) {
     });
 
     // Delete email lists.
-    // const cleanedName = transformToKey(e.target.name);
-    // const storageKey = `gmail_lists_${cleanedName}`;
-    // chrome.storage.sync.remove(storageKey, () => {
-    //   this.saveToChromeStorage(items);
-    // });
+    var keysForDeletion = queue.map(function (item) {
+      var cleanedName = (0, _StringHelpers2.default)(item);
+      return 'gmail_lists_' + cleanedName;
+    });
+
+    chrome.storage.sync.remove(keysForDeletion);
   });
 });
 

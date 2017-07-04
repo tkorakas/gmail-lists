@@ -39,7 +39,7 @@ export default class RecipientsList extends Component {
       const newRecipient = this.text.value.trim();
 
       // Check if list name already exists.
-      if (!this.state.items.includes(newRecipient)) {
+      if (!this.state.items.includes(newRecipient) && newRecipient !== '') {
         // Add new item to array and save to chrome storage and update state.
         const items = [...this.state.items, newRecipient];
         this.saveToChromeStorage(items, true);

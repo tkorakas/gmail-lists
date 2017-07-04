@@ -1,7 +1,6 @@
 import transformToKey from '../utils/StringHelpers';
 
 export default function deleteFunctionality() {
-  // Listen for elapsed alarms.
   let queue = [];
   chrome.storage.sync.get(['gmail_lists_delete_queue', 'gmail_lists'], (data) => {
     // Set items.
