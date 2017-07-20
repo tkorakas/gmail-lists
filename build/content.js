@@ -9163,12 +9163,10 @@ var Lists = function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      chrome.storage.sync.get({
-        keys: 'gmail_lists', callback: function callback(data) {
-          _this2.setState({
-            items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : []
-          });
-        }
+      chrome.storage.sync.get('gmail_lists', function (data) {
+        _this2.setState({
+          items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : []
+        });
       });
     }
   }, {
@@ -9178,11 +9176,9 @@ var Lists = function (_Component) {
 
       e.preventDefault();
       var name = (0, _StringHelpers2.default)(e.target.name);
-      chrome.storage.sync.get({
-        keys: 'gmail_lists_' + name, callback: function callback(data) {
-          var emails = data['gmail_lists_' + name];
-          _this3.props.event.composeView.setToRecipients(emails !== undefined ? emails : []);
-        }
+      chrome.storage.sync.get('gmail_lists_' + name, function (data) {
+        var emails = data['gmail_lists_' + name];
+        _this3.props.event.composeView.setToRecipients(emails !== undefined ? emails : []);
       });
     }
   }, {
