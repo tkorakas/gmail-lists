@@ -37,7 +37,7 @@ gulp.task('sass', function() {
 });
 
 // Zip app to upload on Google web store.
-gulp.task('zip-app', () =>
+gulp.task('zip', () =>
   gulp.src('build/**/**')
     .pipe(plugins.zip('build.zip'))
     .pipe(gulp.dest('./'))
