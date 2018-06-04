@@ -9246,7 +9246,7 @@ var _AppId2 = _interopRequireDefault(_AppId);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-InboxSDK.load('1', _AppId2.default).then(function (sdk) {
+InboxSDK.load('2', _AppId2.default).then(function (sdk) {
   // The SDK has been loaded.
   sdk.Compose.registerComposeViewHandler(function (composeView) {
     // A compose view has come into existence.

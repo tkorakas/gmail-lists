@@ -3,7 +3,7 @@ import React from 'react';
 import Content from './index';
 import appID from './AppId'
 
-InboxSDK.load('1', appID).then(function (sdk) {
+InboxSDK.load('2', appID).then(function (sdk) {
   // The SDK has been loaded.
   sdk.Compose.registerComposeViewHandler(function (composeView) {
     // A compose view has come into existence.
