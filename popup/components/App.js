@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import List from './List';
+import GroupsList from './List';
 import RecipientsList from './RecepientsList';
 
 export default class App extends Component {
@@ -33,7 +33,7 @@ export default class App extends Component {
    * Render List or recipients page based on state,
    */
   renderPage() {
-    return this.state.page === 'list' ? <List changePage={this.changePage}/> :
+    return this.state.page === 'list' ? <GroupsList changePage={this.changePage}/> :
       <RecipientsList item={this.state.item} changePage={this.changePage}/>
   }
 

@@ -1,40 +1,28 @@
-import React, {Component} from 'react';
-import keyIndex from 'react-key-index';
-import {CSSTransitionGroup} from 'react-transition-group';
+import React, { Component } from 'react';
+import { CSSTransitionGroup } from 'react-transition-group';
+import Input from '@material-ui/core/Input';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
 
-export default class List extends Component {
+export default class GroupsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       items: [],
       showUndoButton: false,
     };
-
-    this.addItem = this.addItem.bind(this);
-    this.deleteItem = this.deleteItem.bind(this);
-    this.saveToChromeStorage = this.saveToChromeStorage.bind(this);
-    this.loadLists = this.loadLists.bind(this);
-    this.undoDeletedIem = this.undoDeletedIem.bind(this);
-    this.renderUndoButton = this.renderUndoButton.bind(this);
-    this.onMessage = this.onMessage.bind(this);
   }
 
   componentDidMount() {
     this.loadLists();
-    chrome.runtime.onMessage.addListener(this.onMessage);
-  }
-
-  /**
-   * Disable undo button and reload lists.
-   */
-  onMessage(request, sender) {
-    this.setState({showUndoButton: false});
   }
 
   /**
    * Load all lists.
    */
-  loadLists() {
+  loadLists = () => {
     chrome.storage.sync.get('gmail_lists', (data) => {
       this.setState({
         items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : [],
@@ -45,7 +33,7 @@ export default class List extends Component {
   /**
    * Add new list.
    */
-  addItem(e) {
+  addItem = (e) => {
     if (e.key === 'Enter') {
       const trimmedValue = this.text.value.trim();
       // Check if list name already exists.
@@ -62,7 +50,7 @@ export default class List extends Component {
   /**
    * Delete an item from the list.
    */
-  deleteItem(e) {
+  deleteItem = (e) => {
     e.preventDefault();
     e.stopPropagation();
     // Remove item from array and save to chrome storage and update state.
@@ -73,9 +61,9 @@ export default class List extends Component {
     chrome.storage.sync.get('gmail_lists_delete_queue', (data) => {
       let queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
       queue.push(itemToDelete);
-      chrome.storage.sync.set({gmail_lists_delete_queue: queue}, () => {
-        chrome.alarms.create('gmail_lists_delete_item', { when: Date.now() + 4000 });
-        this.setState({showUndoButton: true, items});
+      chrome.storage.sync.set({ gmail_lists_delete_queue: queue }, () => {
+        this.setState({ showUndoButton: true, items });
+        setTimeout(() => this.setState({ showUndoButton: false }), 4000);
       });
     });
   }
@@ -88,7 +76,7 @@ export default class List extends Component {
    * @param isNewItem
    *  Check if is new item to scroll.
    */
-  saveToChromeStorage(items, isNewItem = false) {
+  saveToChromeStorage = (items, isNewItem = false) => {
     let objectToSave = {};
     objectToSave['gmail_lists'] = items;
     chrome.storage.sync.set(objectToSave, () => {
@@ -106,11 +94,11 @@ export default class List extends Component {
   /**
    * Remove last item from delete queue.
    */
-  undoDeletedIem(e) {
+  undoDeletedIem = (e) => {
     chrome.storage.sync.get('gmail_lists_delete_queue', (data) => {
       const deleteQueue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
       const item = deleteQueue.pop();
-      chrome.storage.sync.set({gmail_lists_delete_queue: deleteQueue}, () => {
+      chrome.storage.sync.set({ gmail_lists_delete_queue: deleteQueue }, () => {
         this.setState({
           showUndoButton: false,
           items: [...this.state.items, item]
@@ -122,33 +110,35 @@ export default class List extends Component {
   /**
    * Render undo button element.
    */
-  renderUndoButton() {
+  renderUndoButton = () => {
     const undoElement = <button className="undo-button" onClick={this.undoDeletedIem}>Undo</button>;
     return !this.state.showUndoButton ? null : undoElement;
   }
 
   render() {
-    const data = keyIndex(this.state.items, 1);
     return (
       <div className="app-list">
         <span className="input-container">
-          <input placeholder="Create new list" onKeyPress={this.addItem} type="text" ref={c => this.text = c}/>
+          <Input inputRef={c => this.text = c} type="text" autoFocus={true} placeholder="Create new list" onKeyPress={this.addItem} />
         </span>
-        <ul ref={(c) => this.list = c}>
-          <CSSTransitionGroup
-            transitionName="list-item"
-            transitionEnterTimeout={500}
-            transitionLeaveTimeout={300}>
-            {data.map(item => {
-              return (
-                <li key={item._id} onClick={() => this.props.changePage(item.value)}>
-                  <span title={item.value}>{item.value}</span>
-                  <a name={item.value} onClick={this.deleteItem} className="delete-button" href="">&#10005;</a>
-                </li>
-              );
-            })}
-          </CSSTransitionGroup>
-        </ul>
+        <List ref={(c) => this.list = c} component="nav">
+          {this.state.items.map(item => {
+            return (
+              <React.Fragment key={item + '_fragment'} >
+                <ListItem button key={item} onClick={() => this.props.changePage(item)}>
+                  <ListItemText primary={item} title={item} />
+                </ListItem>
+                <Divider />
+              </React.Fragment>
+            );
+          })}
+        </List>
+        {/* <CSSTransitionGroup */}
+        {/* transitionName="list-item" */}
+        {/* transitionEnterTimeout={500} */}
+        {/* transitionLeaveTimeout={300}> */}
+
+        {/* </CSSTransitionGroup> */}
         {this.renderUndoButton()}
       </div>
     );

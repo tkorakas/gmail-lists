@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import keyIndex from 'react-key-index';
-import {CSSTransitionGroup} from 'react-transition-group';
 import cleanSpecialCharactersAndRemoveSpaces from '../../utils/StringHelpers';
 
 export default class RecipientsList extends Component {
@@ -84,7 +82,6 @@ export default class RecipientsList extends Component {
   }
 
   render() {
-    const data = keyIndex(this.state.items, 1);
     return (
       <div className="app-list">
         <a onClick={() => this.props.changePage()} href="#" className="back-button">&lt;</a>
@@ -93,20 +90,15 @@ export default class RecipientsList extends Component {
                  ref={c => this.text = c}/>
         </span>
         <ul ref={(c) => this.list = c}>
-          <CSSTransitionGroup
-            transitionName="list-item"
-            transitionEnterTimeout={500}
-            transitionLeaveTimeout={300}>
-            {data.map(item => {
+            {this.state.items.map(item => {
               return (
-                <li className="show" key={item._id}>
-                  <span title={item.value}>{item.value}</span>
-                  <a className="delete-button" name={item.value} onClick={this.deleteItem} style={{float: 'right'}}
+                <li className="show" key={item}>
+                  <span title={item}>{item}</span>
+                  <a className="delete-button" name={item} onClick={this.deleteItem} style={{float: 'right'}}
                      href="">&#10005;</a>
                 </li>
               );
             })}
-          </CSSTransitionGroup>
         </ul>
       </div>
     );
