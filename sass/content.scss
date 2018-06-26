@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 @import "variables";
 
 #gmail_lists_content {
@@ -6,33 +6,34 @@
   ul {
     list-style: none;
     padding: 0;
+    margin: 0;
     height: 150px;
     overflow: hidden;
     overflow-y: scroll;
     li {
-      cursor: pointer;
-      padding: 0 5px;
+      padding-left: 5px;
       line-height: 30px;
       font-size: 15px;
       font-weight: 400;
-      font-family: 'Open Sans', sans-serif;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: 'Roboto', sans-serif;
       a {
-        text-decoration: none;
-        cursor: pointer;
+        float: right;
+        padding-right: 5px;
         color: $very-dark-grey;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        text-decoration: none;
+        color: #FF4081;
         white-space: nowrap;
-        display: inline-block;
         vertical-align: bottom;
-        width: 150px;
-      }
-      &:nth-child(even) {
-        background-color: $grey;
       }
       &:hover {
-        background-color: $dark-grey;
+        background-color: $grey;
       }
+    }
+    .gmail-lists-list--divider {
+      color: $grey;
+      margin: 0 !important;
     }
   }
 }

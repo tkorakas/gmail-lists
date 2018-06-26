@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Gmail lists",
   "description": "Manage your contacts using lists and use them on Gmail with ease",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Thanos Korakas",
   "browser_action": {
     "default_title": "Gmail lists",

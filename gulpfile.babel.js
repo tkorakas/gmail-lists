@@ -31,7 +31,7 @@ gulp.task('sass', function() {
       browsers: ['last 2 versions'],
       cascade: false
     }))
-    .pipe(gulp.dest('.build/css'))
+    .pipe(gulp.dest('./build/css'))
     .pipe(plugins.livereload());
 });
 
@@ -46,7 +46,7 @@ gulp.task('popup-js', ['clean'], (cb) => {
   webpack(popupWebpackConfig, (err, stats) => {
     if (err) throw new plugins.util.PluginError('webpack', err);
 
-    plugins.util.log('[webpack]', stats.toString());
+    // plugins.util.log('[webpack]', stats.toString());
     plugins.livereload();
     cb();
   });
@@ -56,7 +56,7 @@ gulp.task('content-js', ['clean'], (cb) => {
   webpack(contentWebpackConfig, (err, stats) => {
     if (err) throw new plugins.util.PluginError('webpack', err);
 
-    plugins.util.log('[webpack]', stats.toString());
+    // plugins.util.log('[webpack]', stats.toString());
     plugins.livereload();
     cb();
   });
@@ -89,6 +89,7 @@ gulp.task('clean', (cb) => {
 });
 
 gulp.task('build', ['copy-manifest', 'copy-libs', 'copy-assets', 'popup-html', 'sass:dev', 'content-js', 'popup-js']);
+gulp.task('prod', ['clean', 'copy-manifest', 'copy-libs', 'copy-assets', 'popup-html', 'sass:dev', 'content-js', 'popup-js']);
 
 gulp.task('watch', ['default'], () => {
   plugins.livereload.listen();
