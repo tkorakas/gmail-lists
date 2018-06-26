@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App component snapshot test 1`] = `
+<div>
+  <div
+    className="app-list"
+  >
+    <span
+      className="input-container"
+    >
+      <div
+        className="MuiInput-root-1 MuiInput-fullWidth-8 MuiInput-underline-5"
+        onKeyPress={[Function]}
+        style={
+          Object {
+            "paddingLeft": 4,
+          }
+        }
+      >
+        <input
+          autoFocus={true}
+          className="MuiInput-input-9"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onFocus={[Function]}
+          placeholder="Create new list"
+          type="text"
+        />
+      </div>
+    </span>
+    <nav
+      className="MuiList-root-14 MuiList-padding-15"
+    />
+  </div>
+</div>
+`;

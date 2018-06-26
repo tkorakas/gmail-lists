@@ -2,13 +2,21 @@ import React from 'react';
 import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 Enzyme.configure({ adapter: new Adapter() });
+import renderer from 'react-test-renderer';
 import List from './List';
 import chrome from '../../utils/ChromeMock';
 import deleteFunctionality from '../../utils/BackgroundMock';
 
 describe('List component', () => {
   beforeEach(() => {
-   window.chrome = chrome;
+    window.chrome = chrome;
+  });
+
+  test('snapshot test', () => {
+    const tree = renderer
+    .create(<List changePage={jest.fn()}/>)
+    .toJSON();
+    expect(tree).toMatchSnapshot();
   });
 
   test('insert new value to list', () => {

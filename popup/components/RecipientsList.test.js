@@ -3,6 +3,7 @@ import Enzyme, { mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 Enzyme.configure({ adapter: new Adapter() });
 import RecipientsList from './RecepientsList';
+import renderer from 'react-test-renderer';
 import chrome from '../../utils/ChromeMock';
 
 describe('RecipientsList component', () => {
@@ -10,6 +11,12 @@ describe('RecipientsList component', () => {
    window.chrome = chrome;
   });
 
+  test('snapshot test', () => {
+    const tree = renderer
+    .create(<RecipientsList changePage={jest.fn()} item='list' />)
+    .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
 
   test('insert new value to list', () => {
     const list = mount(
