@@ -1,13 +1,13 @@
 @import "variables";
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 
 body {
   font-size: 15px;
-  min-width: 200px;
-  max-width: 201px;
+  min-width: 400px;
+  max-width: 401px;
   font-weight: 400;
   min-height: 300px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .input-container {
@@ -15,92 +15,78 @@ body {
   overflow: hidden;
 }
 
-input[type="text"] {
-  padding-left: 5px;
-  font-family: 'Open Sans', sans-serif;
-  width: 190px;
-  height: 30px;
-  font-size: 15px;
-  &:focus {
-    outline: none;
-  }
-  &.recipients-input {
-    width: 170px;
-  }
-}
-
 a {
   text-decoration: none;
   color: $very-dark-grey;
 }
 
-.app-list {
-  ul {
-    list-style: none;
-    padding: 0;
-    height: 250px;
-    overflow: hidden;
-    overflow-y: scroll;
-    li {
-      transition: all 0.4s ease-out;
-      padding: 0 5px;
-      line-height: 30px;
-      &.list-item-enter {
-        opacity: 0.01;
-        &.list-item-enter-active {
-          opacity: 1;
-          transition: opacity 500ms ease-in;
-        }
-      }
-      &.list-item-leave {
-        opacity: 1;
-        &.list-item-leave-active {
-          opacity: 0.01;
-          transition: opacity 300ms ease-out;
-        }
-      }
-      span {
-        cursor: pointer;
-        color: $very-dark-grey;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        display: inline-block;
-        vertical-align: bottom;
-        width: 150px;
-      }
-      &:nth-child(even) {
-        background-color: $grey;
-      }
-      &:hover {
-        background-color: $dark-grey;
-      }
-      .delete-button {
-        transition: text-shadow .3s linear;
-        color: $red;
-        float: right;
-        &:hover {
-          text-shadow: 1px 1px 2px black;
-        }
-      }
+// .app-list {
+//   ul {
+//     list-style: none;
+//     padding: 0;
+//     height: 250px;
+//     overflow: hidden;
+//     overflow-y: scroll;
+//     li {
+//       transition: all 0.4s ease-out;
+//       padding: 0 5px;
+//       line-height: 30px;
+//       &.list-item-enter {
+//         opacity: 0.01;
+//         &.list-item-enter-active {
+//           opacity: 1;
+//           transition: opacity 500ms ease-in;
+//         }
+//       }
+//       &.list-item-leave {
+//         opacity: 1;
+//         &.list-item-leave-active {
+//           opacity: 0.01;
+//           transition: opacity 300ms ease-out;
+//         }
+//       }
+//       span {
+//         cursor: pointer;
+//         color: $very-dark-grey;
+//         overflow: hidden;
+//         text-overflow: ellipsis;
+//         white-space: nowrap;
+//         display: inline-block;
+//         vertical-align: bottom;
+//         width: 150px;
+//       }
+//       &:nth-child(even) {
+//         background-color: $grey;
+//       }
+//       &:hover {
+//         background-color: $dark-grey;
+//       }
+//       .delete-button {
+//         transition: text-shadow .3s linear;
+//         color: $red;
+//         float: right;
+//         &:hover {
+//           text-shadow: 1px 1px 2px black;
+//         }
+//       }
 
-    }
-  }
+//     }
+//   }
 
-  .undo-button {
-    width: 100%;
-    border: 0;
-    color: #fff;
-    height: 30px;
-    font-size: 15px;
-    font-weight: 400;
-    background-color: rgba(0, 0, 0, 0.9);
-    opacity: 0.6;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-}
+//   .undo-button {
+//     width: 100%;
+//     border: 0;
+//     color: #fff;
+//     height: 30px;
+//     font-size: 15px;
+//     font-weight: 400;
+//     background-color: rgba(0, 0, 0, 0.9);
+//     opacity: 0.6;
+//     &:hover {
+//       cursor: pointer;
+//     }
+//   }
+// }
 
 .back-button {
   float: left;

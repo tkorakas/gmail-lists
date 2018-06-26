@@ -4,9 +4,6 @@ import rimraf from 'rimraf';
 import loadPlugins from 'gulp-load-plugins';
 const plugins = loadPlugins();
 import sass from 'gulp-sass';
-import popupWebpackConfig from './popup/webpack.config';
-import contentWebpackConfig from './content/webpack.config';
-import backgroundWebpackConfig from './background/webpack.config';
 
 // Compile sass to css for dev.
 gulp.task('sass:dev', ['clean'], () => {
@@ -43,35 +40,25 @@ gulp.task('zip', () =>
     .pipe(gulp.dest('./'))
 );
 
-gulp.task('popup-js', ['clean'], (cb) => {
-  webpack(popupWebpackConfig, (err, stats) => {
-    if (err) throw new plugins.util.PluginError('webpack', err);
+// gulp.task('popup-js', ['clean'], (cb) => {
+//   webpack(popupWebpackConfig, (err, stats) => {
+//     if (err) throw new plugins.util.PluginError('webpack', err);
 
-    // plugins.util.log('[webpack]', stats.toString());
-    plugins.livereload();
-    cb();
-  });
-});
+//     // plugins.util.log('[webpack]', stats.toString());
+//     plugins.livereload();
+//     cb();
+//   });
+// });
 
-gulp.task('content-js', ['clean'], (cb) => {
-  webpack(contentWebpackConfig, (err, stats) => {
-    if (err) throw new plugins.util.PluginError('webpack', err);
+// gulp.task('content-js', ['clean'], (cb) => {
+//   webpack(contentWebpackConfig, (err, stats) => {
+//     if (err) throw new plugins.util.PluginError('webpack', err);
 
-    // plugins.util.log('[webpack]', stats.toString());
-    plugins.livereload();
-    cb();
-  });
-});
-
-gulp.task('background-js', ['clean'], (cb) => {
-  webpack(backgroundWebpackConfig, (err, stats) => {
-    if (err) throw new plugins.util.PluginError('webpack', err);
-
-    plugins.util.log('[webpack]', stats.toString());
-    plugins.livereload();
-    cb();
-  });
-});
+//     // plugins.util.log('[webpack]', stats.toString());
+//     plugins.livereload();
+//     cb();
+//   });
+// });
 
 gulp.task('popup-html', ['clean'], () => {
   return gulp.src('popup/index.html')
@@ -99,7 +86,7 @@ gulp.task('clean', (cb) => {
   rimraf('./build', cb);
 });
 
-gulp.task('build', ['copy-manifest', 'copy-libs', 'copy-assets', 'popup-js', 'popup-html', 'content-js', 'background-js', 'sass:dev']);
+gulp.task('build', ['copy-manifest', 'copy-libs', 'copy-assets', 'popup-html', 'sass:dev']);
 
 gulp.task('watch', ['default'], () => {
   plugins.livereload.listen();

@@ -1,5 +1,7 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+Enzyme.configure({ adapter: new Adapter() });
 import List from './List';
 import chrome from '../../utils/ChromeMock';
 import deleteFunctionality from '../../utils/BackgroundMock';
@@ -86,7 +88,7 @@ describe('List component', () => {
 
     // Click delete button.
     const deleteButton = list.find('.delete-button').first();
-    deleteButton.simulate('click', {targe: {name: 'List 1'}});
+    deleteButton.simulate('click', {target: {name: 'List 1'}});
 
     // Simulate background script.
     const undoButton = list.find('.undo-button').first();
@@ -114,8 +116,6 @@ describe('List component', () => {
     const deleteButton = list.find('.delete-button').first();
     deleteButton.simulate('click', {targe: {name: 'List 1'}});
 
-    // Simulate background script.
-    deleteFunctionality();
     // Item saved on storage.
     chrome.storage.sync.get('gmail_lists', (data) => {
       expect(data).toEqual({gmail_lists: []});

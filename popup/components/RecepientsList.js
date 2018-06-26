@@ -1,5 +1,23 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import cleanSpecialCharactersAndRemoveSpaces from '../../utils/StringHelpers';
+import IconButton from '@material-ui/core/IconButton';
+import Input from '@material-ui/core/Input';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import AppBar from '@material-ui/core/AppBar';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Divider from '@material-ui/core/Divider';
+
+const styles = {
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
+  },
+};
 
 export default class RecipientsList extends Component {
   constructor(props) {
@@ -84,22 +102,43 @@ export default class RecipientsList extends Component {
   render() {
     return (
       <div className="app-list">
-        <a onClick={() => this.props.changePage()} href="#" className="back-button">&lt;</a>
-        <span className="input-container">
-          <input className="recipients-input" placeholder="Add new recipient" onKeyPress={this.addItem} type="text"
-                 ref={c => this.text = c}/>
-        </span>
-        <ul ref={(c) => this.list = c}>
-            {this.state.items.map(item => {
-              return (
-                <li className="show" key={item}>
-                  <span title={item}>{item}</span>
-                  <a className="delete-button" name={item} onClick={this.deleteItem} style={{float: 'right'}}
-                     href="">&#10005;</a>
-                </li>
-              );
-            })}
-        </ul>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              style={styles.menuButton}
+              aria-label="Back"
+              onClick={() => this.props.changePage()}
+            >
+              <ArrowBack />
+            </IconButton>
+            <Typography variant="title" color="inherit">
+              {this.props.item}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+
+        <Input style={{ marginTop: 8 }} fullWidth={true} inputRef={c => this.text = c} type="text" autoFocus={true} placeholder="Add new recipient" onKeyPress={this.addItem} />
+
+        <List ref={(c) => this.list = c} component="nav">
+          {this.state.items.map(item => {
+            return (
+              <React.Fragment key={item + '_fragment'} >
+                <ListItem>
+                  <ListItemText primary={item} title={item} />
+                  <IconButton
+                    className="delete-button"
+                    aria-label="More"
+                    onClick={(e) => this.deleteItem(e, item)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItem>
+                <Divider />
+              </React.Fragment>
+            );
+          })}
+        </List>
+
       </div>
     );
   }

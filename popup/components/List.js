@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
-import { CSSTransitionGroup } from 'react-transition-group';
 import Input from '@material-ui/core/Input';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
+
+const options = [
+  'Copy',
+  'Delete',
+];
+const ITEM_HEIGHT = 24;
 
 export default class GroupsList extends Component {
   constructor(props) {
@@ -12,6 +22,7 @@ export default class GroupsList extends Component {
     this.state = {
       items: [],
       showUndoButton: false,
+      undoItem: null
     };
   }
 
@@ -25,7 +36,7 @@ export default class GroupsList extends Component {
   loadLists = () => {
     chrome.storage.sync.get('gmail_lists', (data) => {
       this.setState({
-        items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : [],
+        items: data['gmail_lists'] !== undefined ? data['gmail_lists'] : []
       });
     });
   }
@@ -50,21 +61,16 @@ export default class GroupsList extends Component {
   /**
    * Delete an item from the list.
    */
-  deleteItem = (e) => {
+  deleteItem = (e, item) => {
     e.preventDefault();
     e.stopPropagation();
     // Remove item from array and save to chrome storage and update state.
-    const itemToDelete = e.target.name;
-    const items = this.state.items.filter((item) => item !== e.target.name);
+    const items = this.state.items.filter((i) => i !== item);
 
     // Add item on queue for deletion.
-    chrome.storage.sync.get('gmail_lists_delete_queue', (data) => {
-      let queue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
-      queue.push(itemToDelete);
-      chrome.storage.sync.set({ gmail_lists_delete_queue: queue }, () => {
-        this.setState({ showUndoButton: true, items });
-        setTimeout(() => this.setState({ showUndoButton: false }), 4000);
-      });
+    chrome.storage.sync.set({ gmail_lists: items }, () => {
+      this.setState({ showUndoButton: true, items, undoItem: item });
+      setTimeout(() => this.setState({ showUndoButton: false }), 4000);
     });
   }
 
@@ -84,7 +90,6 @@ export default class GroupsList extends Component {
         items,
       }, () => {
         if (isNewItem) {
-          // Scroll to last item.
           this.list.scrollTop += 30 * (this.state.items.length);
         }
       });
@@ -95,31 +100,59 @@ export default class GroupsList extends Component {
    * Remove last item from delete queue.
    */
   undoDeletedIem = (e) => {
-    chrome.storage.sync.get('gmail_lists_delete_queue', (data) => {
-      const deleteQueue = data['gmail_lists_delete_queue'] !== undefined ? data['gmail_lists_delete_queue'] : [];
-      const item = deleteQueue.pop();
-      chrome.storage.sync.set({ gmail_lists_delete_queue: deleteQueue }, () => {
-        this.setState({
-          showUndoButton: false,
-          items: [...this.state.items, item]
-        });
+    const items = [...this.state.items, this.state.undoItem]
+    chrome.storage.sync.set({ gmail_lists: items }, () => {
+      this.setState({
+        showUndoButton: false,
+        items
       });
     });
+  }
+
+  handleClose = e => {
+    e.preventDefault();
+    this.setState({ showUndoButton: false })
   }
 
   /**
    * Render undo button element.
    */
   renderUndoButton = () => {
-    const undoElement = <button className="undo-button" onClick={this.undoDeletedIem}>Undo</button>;
+    const undoElement = <Snackbar
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
+      open={this.state.showUndoButton}
+      autoHideDuration={6000}
+      ContentProps={{
+        'aria-describedby': 'message-id',
+      }}
+      message={<span id="message-id">List deleted</span>}
+      action={[
+        <Button key="undo" color="secondary" size="small" onClick={this.undoDeletedIem}>
+          UNDO
+            </Button>,
+        <IconButton
+          key="close"
+          aria-label="Close"
+          color="inherit"
+          onClick={this.handleClose}
+        >
+          <CloseIcon />
+        </IconButton>,
+      ]}
+    />
     return !this.state.showUndoButton ? null : undoElement;
   }
 
   render() {
+    const { anchorEl } = this.state;
+
     return (
       <div className="app-list">
         <span className="input-container">
-          <Input inputRef={c => this.text = c} type="text" autoFocus={true} placeholder="Create new list" onKeyPress={this.addItem} />
+          <Input fullWidth={true} inputRef={c => this.text = c} type="text" autoFocus={true} placeholder="Create new list" onKeyPress={this.addItem} />
         </span>
         <List ref={(c) => this.list = c} component="nav">
           {this.state.items.map(item => {
@@ -127,18 +160,19 @@ export default class GroupsList extends Component {
               <React.Fragment key={item + '_fragment'} >
                 <ListItem button key={item} onClick={() => this.props.changePage(item)}>
                   <ListItemText primary={item} title={item} />
+                  <IconButton
+                    className="delete-button"
+                    aria-label="More"
+                    onClick={(e) => this.deleteItem(e, item)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
                 </ListItem>
                 <Divider />
               </React.Fragment>
             );
           })}
         </List>
-        {/* <CSSTransitionGroup */}
-        {/* transitionName="list-item" */}
-        {/* transitionEnterTimeout={500} */}
-        {/* transitionLeaveTimeout={300}> */}
-
-        {/* </CSSTransitionGroup> */}
         {this.renderUndoButton()}
       </div>
     );
