@@ -37,7 +37,7 @@ export default class Lists extends Component {
     const data = keyIndex(this.state.items, 1);
     return (
       <ul className="gmails-lists-list">
-        {data.map(item => <li key={item._id}><a name={item.value} onClick={this.fillRecipients}
+        {data.map(item => <li key={item.id}><a name={item.value} onClick={this.fillRecipients}
                                                 href="">{item.value}</a></li>)}
       </ul>
     );

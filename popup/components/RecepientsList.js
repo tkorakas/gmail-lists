@@ -14,8 +14,8 @@ import Divider from '@material-ui/core/Divider';
 
 const styles = {
   menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
+    marginLeft: -14,
+    marginRight: 4,
   },
 };
 
@@ -39,6 +39,9 @@ export default class RecipientsList extends Component {
     this.loadLists();
   }
 
+  /**
+   * Load email for the current list.
+   */
   loadLists() {
     chrome.storage.sync.get(this.state.storageKey, (data) => {
       this.setState({
@@ -68,11 +71,11 @@ export default class RecipientsList extends Component {
   /**
    * Delete an item from the list.
    */
-  deleteItem(e) {
+  deleteItem(e, item) {
     e.preventDefault();
     e.stopPropagation();
     // Remove item from array and save to chrome storage and update state.
-    const items = this.state.items.filter((item) => item !== e.target.name);
+    const items = this.state.items.filter((i) => i !== item);
     this.saveToChromeStorage(items);
   }
 
@@ -116,14 +119,12 @@ export default class RecipientsList extends Component {
             </Typography>
           </Toolbar>
         </AppBar>
-
-        <Input style={{ marginTop: 8 }} fullWidth={true} inputRef={c => this.text = c} type="text" autoFocus={true} placeholder="Add new recipient" onKeyPress={this.addItem} />
-
+        <Input placeholder="Recipient email" style={{ marginTop: 16, paddingLeft: 4 }} fullWidth={true} inputRef={c => this.text = c} type="email" autoFocus={true} onKeyPress={this.addItem} />
         <List ref={(c) => this.list = c} component="nav">
           {this.state.items.map(item => {
             return (
               <React.Fragment key={item + '_fragment'} >
-                <ListItem>
+                <ListItem style={{paddingTop: 0, paddingBottom: 0}}>
                   <ListItemText primary={item} title={item} />
                   <IconButton
                     className="delete-button"

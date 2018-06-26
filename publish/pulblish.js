@@ -1,10 +1,9 @@
-const webstore_upload = require('./lib/webstore_upload');
+const webstore_upload = require('webstore-upload');
 const uploadOptions = require('./webstore_credentials');
 
-webstore_upload(uploadOptions)
+webstore_upload(uploadOptions, console.log)
   .then(function (result) {
     console.log(result);
-    // do somethings nice
     return 'yay';
   })
   .catch(function (err) {

@@ -17,6 +17,21 @@
     "storage",
     "tabs"
   ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mail.google.com/*",
+        "https://inbox.google.com/*"
+      ],
+      "css": [
+        "css/content.css"
+      ],
+      "js": [
+        "inboxsdk.js",
+        "content.js"
+      ]
+    }
+  ],
   "web_accessible_resources": [
     "assets/*",
     "css/content.css"

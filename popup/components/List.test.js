@@ -78,7 +78,7 @@ describe('List component', () => {
       <List changePage={jest.fn()} />
     );
 
-    expect(list.find('li').length).toBe(1);
+    expect(list.find('ListItemText').length).toBe(1);
   });
 
   test('undo deleted value', () =>{
@@ -104,7 +104,7 @@ describe('List component', () => {
     list = mount(
       <List changePage={jest.fn()} />
     );
-    expect(list.find('li').length).toBe(1);
+    expect(list.find('ListItem').length).toBe(1);
   });
 
   test('delete value from list', () =>{

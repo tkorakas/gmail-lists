@@ -9,6 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
+import transformToKey from '../../utils/StringHelpers';
 
 const options = [
   'Copy',
@@ -70,8 +71,17 @@ export default class GroupsList extends Component {
     // Add item on queue for deletion.
     chrome.storage.sync.set({ gmail_lists: items }, () => {
       this.setState({ showUndoButton: true, items, undoItem: item });
-      setTimeout(() => this.setState({ showUndoButton: false }), 4000);
+      setTimeout(() => this.deletePermanent(item), 1500);
     });
+  }
+
+  /**
+   * Delete all the email from the list.
+   */
+  deletePermanent = (item) => {
+    const cleanName = transformToKey(item);
+    chrome.storage.sync.remove([`gmail_lists_${cleanName}`])
+    this.setState({ showUndoButton: false });
   }
 
   /**
@@ -130,9 +140,9 @@ export default class GroupsList extends Component {
       }}
       message={<span id="message-id">List deleted</span>}
       action={[
-        <Button key="undo" color="secondary" size="small" onClick={this.undoDeletedIem}>
+        <Button className="undo-button" key="undo" color="secondary" size="small" onClick={this.undoDeletedIem}>
           UNDO
-            </Button>,
+        </Button>,
         <IconButton
           key="close"
           aria-label="Close"
@@ -152,13 +162,13 @@ export default class GroupsList extends Component {
     return (
       <div className="app-list">
         <span className="input-container">
-          <Input fullWidth={true} inputRef={c => this.text = c} type="text" autoFocus={true} placeholder="Create new list" onKeyPress={this.addItem} />
+          <Input style={{ paddingLeft: 4 }} fullWidth={true} inputRef={c => this.text = c} type="text" autoFocus={true} placeholder="Create new list" onKeyPress={this.addItem} />
         </span>
         <List ref={(c) => this.list = c} component="nav">
           {this.state.items.map(item => {
             return (
               <React.Fragment key={item + '_fragment'} >
-                <ListItem button key={item} onClick={() => this.props.changePage(item)}>
+                <ListItem style={{ paddingTop: 0, paddingBottom: 0 }} button key={item} onClick={() => this.props.changePage(item)}>
                   <ListItemText primary={item} title={item} />
                   <IconButton
                     className="delete-button"

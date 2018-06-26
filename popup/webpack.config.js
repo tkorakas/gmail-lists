@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 
 module.exports = {
-  entry: './index.js',
+  entry: './popup/index.js',
   output: {
     path: __dirname,
     filename: '../build/popup.js'
