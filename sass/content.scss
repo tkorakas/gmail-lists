@@ -21,11 +21,13 @@
       a {
         float: right;
         padding-right: 5px;
-        color: $very-dark-grey;
         text-decoration: none;
         color: #FF4081;
         white-space: nowrap;
         vertical-align: bottom;
+        &:hover {
+          color: darken(#FF4081, 25);
+        }
       }
       &:hover {
         background-color: $grey;
