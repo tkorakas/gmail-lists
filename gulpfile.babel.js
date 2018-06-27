@@ -89,7 +89,6 @@ gulp.task('clean', (cb) => {
 });
 
 gulp.task('build', ['copy-manifest', 'copy-libs', 'copy-assets', 'popup-html', 'sass:dev', 'content-js', 'popup-js']);
-gulp.task('prod', ['clean', 'copy-manifest', 'copy-libs', 'copy-assets', 'popup-html', 'sass:dev', 'content-js', 'popup-js']);
 
 gulp.task('watch', ['default'], () => {
   plugins.livereload.listen();
